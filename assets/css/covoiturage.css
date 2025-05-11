@@ -1,0 +1,363 @@
+/* covoiturage.css – Design complet responsive */
+
+/* =========================
+   Variables globales
+   ========================= */
+:root {
+  --background-color: rgba(218, 227, 236, 1);
+  --primary-color: rgba(232, 248, 210, 1);
+  --secondary-color: rgba(112, 193, 61, 1);
+  --border-radius: 20px;
+  --box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* =========================
+   Reset & Global
+   ========================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Sansation', Arial, Helvetica, sans-serif;
+  background-color: var(--background-color);
+  line-height: 1.5;
+  color: #333;
+}
+
+a {
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   Page Introduction
+   ========================= */
+.pageIntro {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+.pageTitle {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  margin-bottom: 1rem;
+}
+.introText {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: #555;
+}
+
+/* =========================
+   Séparation visuelle
+   ========================= */
+.separation {
+  width: 80%;
+  height: 1px;
+  background: var(--secondary-color);
+  margin: 2rem auto;
+}
+
+/* =========================
+   Layout principal
+   ========================= */
+.contain {
+  display: flex;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.option {
+  background: var(--primary-color);
+  padding: 1.5rem;
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  box-shadow: var(--box-shadow);
+  flex: 0 0 350px;
+}
+
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================
+   Styles du formulaire
+   ========================= */
+.option h2 {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.filter-group {
+  margin-bottom: 1.5rem;
+}
+.filter-group label {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+.filter-group input,
+.filter-group select {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+}
+
+.zone-selector {
+  text-align: center;
+  margin: 1.5rem 0;
+}
+.zone-selector h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+.range-value {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.validationBtn {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.btn-apply,
+.btn-reset {
+  padding: 0.8rem;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  cursor: pointer;
+  color: white;
+  box-shadow: var(--box-shadow);
+}
+.btn-apply {
+  background: var(--secondary-color);
+}
+.btn-reset {
+  background: rgb(252, 180, 47);
+}
+.btn-apply:hover {
+  background: darken(var(--secondary-color), 10%);
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+.btn-reset:hover {
+  background: darken(rgb(252, 180, 47), 10%);
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+/* =========================
+   Carte Interactive
+   ========================= */
+#map {
+  width: 100%;
+  height: 400px;
+  border-radius: var(--border-radius);
+  margin-top: 1rem;
+}
+
+/* =========================
+   Tri des résultats
+   ========================= */
+.sort {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.sort label {
+  font-size: 1rem;
+  margin-right: 0.5rem;
+}
+.sort select {
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+/* =========================
+   Résultats des trajets
+   ========================= */
+/* Container de chaque résultat */
+/* Container du résultat */
+.result-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  background-color: #f9f9f9;
+}
+
+/* Image à gauche */
+.result-item img {
+  width: 120px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* Contenu textuel (deux colonnes) */
+.result-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 colonnes */
+  gap: 1rem;
+  flex: 1;
+  padding-right: 100px; /* Espace pour le bouton */
+}
+
+/* Titre et contenu */
+.result-content h3 {
+  font-size: 1.2rem;
+  font-weight: bold;
+  grid-column: span 2; /* Titre sur toute la largeur */
+}
+
+/* Paragraphes dans les colonnes */
+.result-content p {
+  margin: 0.25rem 0;
+  font-size: 0.95rem;
+}
+
+/* Bouton à droite, positionné après les colonnes */
+.result-item .select-button {
+  position: relative;
+  right: 10px;
+  bottom: 10px;
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-color);
+  color: rgb(0, 0, 0);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.result-item .select-button:hover {
+  background-color: var(--secondary-color);
+}
+
+
+.select-button {
+  display: inline-block;
+  padding: 0.6rem 1rem;
+  background: var(--secondary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+}
+.select-button:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+/* =========================
+   Pop-up Détail
+   ========================= */
+.popup {
+  display: none;
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+.popup-content {
+  background: white;
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  max-width: 90%;
+  max-height: 90%;
+  overflow: auto;
+}
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+  /* Conteneur principal pour la pub */
+.pub {
+  display: flex;
+  flex-direction: column; /* Aligne le contenu en colonne (image puis texte) */
+  align-items: center; /* Centre tout le contenu horizontalement */
+  justify-content: center; /* Centre tout le contenu verticalement */
+  gap: 1rem; /* Ajoute un peu d'espace entre l'image et le texte */
+  margin: 2rem 0; /* Marge pour le conteneur de la pub */
+}
+
+/* Texte de la pub */
+.pubText {
+  display: flex;
+  flex-direction: column; /* Le texte sera sur plusieurs lignes */
+  align-items: center; /* Centre le texte horizontalement sous l'image */
+  text-align: center; /* Centre le texte à l'intérieur du conteneur */
+  font-size: 1.5rem; /* Taille de la police */
+  margin: 0.5rem 0; /* Marge entre les éléments de texte */
+  max-width: 80%; /* Limite la largeur du texte */
+}
+
+/* Conteneur pour l'image */
+.pubImg {
+  text-align: center; /* Centre l'image */
+  margin-bottom: 1rem; /* Marge sous l'image */
+}
+
+/* Style de l'image */
+.pubImg img {
+  max-width: 200px; /* Taille maximale de l'image */
+  height: auto; /* Garder les proportions de l'image */
+}
+
+
+
+/* =========================
+   Responsive
+   ========================= */
+@media (max-width: 1024px) {
+  .contain {
+    flex-wrap: nowrap; /* garde deux colonnes, se resserrent */
+  }
+  .option {
+    flex: 0 0 300px;
+  }
+}
+@media (max-width: 768px) {
+  .contain {
+    flex-wrap: wrap; /* empile colonne */
+  }
+  .option,
+  main {
+    flex: 1 1 100%;
+  }
+  #map {
+    height: 300px;
+  }
+}
+@media (max-width: 480px) {
+  .pageTitle {
+    font-size: 1.6rem;
+  }
+  .introText {
+    font-size: 0.9rem;
+  }
+  #map {
+    height: 200px;
+  }
+}

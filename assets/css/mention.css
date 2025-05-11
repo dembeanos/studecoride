@@ -1,0 +1,37 @@
+
+body {
+    background-color:var(--backgroundColor);
+}
+
+main{
+    margin-top: 10rem;
+    margin-bottom: 10rem;
+    margin-left:20rem
+}
+h1 {
+    font-size: 4rem;
+    text-align: center;
+}
+
+h2 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-left: 5rem;
+    margin-top: 5rem;
+    margin-bottom: 3rem;
+}
+
+p {
+    font-size: 1.8rem;
+    margin-bottom: 1rem; 
+    margin-left: 7rem;  
+    width: 60vw; 
+    text-align: justify;
+}
+
+.champs {
+    font-weight: bold;
+}
+.grease{
+    color: gray;
+}

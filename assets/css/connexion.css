@@ -1,0 +1,140 @@
+:root {
+  --primary-color: rgba(232, 248, 210, 1);     /* fond formulaire */
+  --secondary-color: rgba(112, 193, 61, 1);    /* accent, boutons */
+  --background: rgba(218, 227, 236, 1);        /* fond global */
+  --text-color: #222;                          /* texte */
+  --error-color: #c0392b;                      /* message d’erreur */
+  --input-border: #ccc;                        /* bordure inputs */
+  font-size: 1.2rem;                           /* taille de base du texte */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 1.2rem;
+  background-color: var(--background);
+  color: var(--text-color);
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header & Footer */
+header, footer {
+  background: var(--secondary-color);
+  color: #fff;
+  text-align: center;
+
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+/* Formulaire centré */
+form {
+  background: var(--primary-color);
+  max-width: 400px;
+  width: 90%;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  flex: 1; /* pousse le footer en bas */
+}
+
+/* Sections internes */
+form section {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+label {
+  margin-bottom: 0.3rem;
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 2px rgba(112, 193, 61, 0.3);
+}
+
+/* Bouton principal */
+button.btn-primary {
+  background: var(--secondary-color);
+  color: #fff;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  
+  display: block;       /* passe en block pour que margin auto fonctionne */
+  margin: 0.8rem auto;   /* 0.8rem vertical (ton padding), auto horizontal */
+}
+button.btn-primary:hover {
+  background: color(rgb(0, 105, 11));
+  transform: scale(1.02);
+}
+
+/* Lien d’inscription */
+a {
+  text-align: center;
+  color: var(--secondary-color);
+  font-size: 1rem;
+  text-decoration: none;
+  margin-top: 0.5rem;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* Message d’erreur */
+.error-message {
+  color: var(--error-color);
+  text-align: center;
+  margin: 1rem 0;
+}
+
+/* Sticky footer : pousse le footer en bas si contenu court */
+footer {
+  margin-top: auto;
+}
+
+/* Responsive tablette et + */
+@media (min-width: 600px) {
+  form {
+    padding: 2rem;
+    gap: 1.5rem;
+  }
+  h2 {
+    font-size: 1.6rem;
+  }
+  button.btn-primary {
+    font-size: 1.1rem;
+  }
+}

@@ -1,0 +1,22 @@
+@import url('../css/fonts.css');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%; /* 62.5% de 16px = 10px */
+}
+
+body {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),url(/Ecoride/assets/images/base/fondGeneral.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: 'Sansation', Arial, Helvetica, sans-serif;
+}
+main {
+    margin-top: 10rem;
+    margin-bottom: 10rem;
+}

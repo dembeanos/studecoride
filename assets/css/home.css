@@ -1,0 +1,642 @@
+body {
+    background-color: var(--backgroundColor);
+}
+
+/* HEADER */
+header {
+    background-image: url('/Ecoride/assets/images/accueil/home_header.jpg');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: relative;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+@media screen and (max-width: 1440px) {
+    header {
+        height: 80rem;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    header {
+        height: 90rem;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    header {
+        height: 50rem;
+        background-attachment: scroll;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    header {
+        height: 20rem;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    header {
+        height: 30rem;
+    }
+}
+
+/* TITRE H1 */
+h1 {
+    font-size: 2vw;
+    text-align: center;
+    margin-top: 2vw;
+    margin-bottom: 2vw;
+}
+
+/* PRESENTATION */
+.presentation {
+    font-size: 1.2vw;
+    position: relative;
+    text-align: center;
+    max-width: 80%;
+    margin: auto;
+    padding: 1rem;
+    line-height: 1.2vw;
+}
+
+.presentation p {
+    padding: 0.5rem;
+}
+
+@media screen and (max-width: 768px) {
+    .presentation {
+        max-width: 95%;
+        text-align: center;
+        line-height: 0.5rem;
+    }
+    h1 {
+        margin-top: 0.1rem;
+        margin-bottom: 0.1rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .presentation {
+        padding: 0.1rem;
+        line-height: 0rem;
+    }
+}
+
+/* SEARCH BAR */
+.formSearchBar {
+    display: flex;
+}
+
+.search-bar {
+    position: relative;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70vw;
+    max-width: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.search-bar input[type="text"], 
+.search-bar input[type="date"] {
+    flex: 1;
+    padding: 1em;
+    border-radius: 20px;
+    border: none;
+    font-size: 1.6rem;
+    margin-right: 1vw;
+}
+
+.search-bar button {
+    border-radius: 20px;
+    padding: 1.1em;
+    border: none;
+    background-color: var(--primaryColor);
+    cursor: pointer;
+    font-size: 1.6rem;
+    white-space: nowrap;
+}
+
+.search-bar button:hover {
+    background-color: var(--secondaryColor);
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+}
+
+.search-bar input[type="text"]:focus, 
+.search-bar input[type="date"]:focus, 
+.search-bar button:focus, 
+.search-bar textarea:focus, 
+.search-bar select:focus {
+    outline: 3px solid var(--secondaryColor);
+    box-shadow: 0 0 5px var(--secondaryColor);
+}
+
+/* MEDIA QUERIES */
+@media screen and (max-width: 1024px) {
+    .search-bar {
+        top: 12vh;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        
+    justify-content: center;
+    align-items: center;
+    }
+
+    .search-bar input[type="text"], 
+    .search-bar input[type="date"] {
+        font-size: 1.4rem;
+    }
+
+    .search-bar button {
+        font-size: 1.4rem;
+        padding: 0.9em;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .search-bar {
+        width: 70vw;
+        top: 28%;
+        
+    justify-content: center;
+    align-items: center;
+    }
+
+    .search-bar input[type="text"], 
+    .search-bar input[type="date"], 
+    .search-bar button {
+        width: 17vw;
+        font-size: 1.2rem;
+        padding: 0.8em;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .search-bar {
+        width: 95vw;
+        top: 2%;
+        position: relative;
+    }
+
+    .search-bar input[type="text"], 
+    .search-bar input[type="date"], 
+    .search-bar button {
+        font-size: 1rem;
+        top: 20%;
+        left: 50%;
+        display: flex;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .search-bar {
+        position: relative; 
+        top: 15%; /* Position verticale ajustée */
+        left: 50%; /* Centrer horizontalement */
+        width: 90vw; /* Ajuste la largeur pour l'écran plus petit */
+        display: flex;
+        margin: 0 auto,
+    }
+
+    .presentation {
+        width: 100%;
+        margin: 0 auto;
+        padding: 1vw;
+        line-height: 3vw;
+    }
+
+    .presentation p {
+        font-size: 0.9rem;
+        padding: 0;
+    }
+    
+
+    .search-bar input[type="text"], 
+    .search-bar input[type="date"], 
+    .search-bar button {
+        font-size: 0.9rem; /* Augmenter légèrement pour la lisibilité */
+        text-align: center;
+        justify-content: center; /* Centrer horizontalement */
+        align-items: center;
+        width: 20vw;
+        
+
+    }
+}
+
+/*---------------------------------------------------------*/
+
+/* Style général de la section highlights à deux sections */
+
+/* Note : j'utilise Flexbox ici à l'inverse de ma page Covoiturage
+   où j'utiliserai grid pour séparer mes sections */
+
+.highlights {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    top: 40%;
+    width: 100vw;
+}
+/*---------------------------------------------------------*/
+
+/* Style sous-section droite de la section highlight */
+.benefits {
+    display: flex;
+    flex-direction: column;
+    width: 49vw;
+    background-color: var(--primaryColor);
+    box-sizing: border-box;
+    position: relative;
+}
+
+.benefits p {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-indent: 2rem;
+}
+
+.benefits h2 {
+    font-size: 1.875rem;
+    margin-bottom: 4rem;
+    margin-top: 3rem;
+    text-align: center;
+    text-indent: 2rem;
+}
+
+.benefits h3 {
+    display: inline-flex;
+    font-size: 1.5rem;
+    align-items: center;
+    text-indent: 2rem;
+}
+
+.benefits h4 {
+    font-size: 1.25rem;
+    margin-bottom: 4rem;
+    text-align: center;
+    margin-top: 3rem;
+    text-indent: 2rem;
+}
+.benefits img{
+    width: 4rem;
+    height: auto;
+    margin-left: 2rem;
+}
+
+/*---------------------------------------------------------*/
+
+/* Style sous-section gauche de la section highlight */
+
+/* Taille commune des images */
+.Offer img {
+    width: 12rem;
+    height: auto;
+}
+
+/*----------------------------------------------------------*/
+
+/* Style offre de l'état */
+.Offer {
+    margin-top: 5rem;
+    width: 50vw;
+    box-sizing: border-box;
+}
+
+.government {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin: 0 auto;
+}
+
+
+.subvention-info {
+    display: flex;
+    width: 30rem;
+    flex-direction: column;
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin: 2rem 2rem 7rem 2rem;
+    gap: 2rem;
+}
+
+.subvention-info a {
+    text-decoration: underline;
+    color: inherit;
+    font-size: 1.5rem;
+}
+
+/*-------------------------------------------------------*/
+
+/* Style Offre nouveau inscrit */
+.deal-offre {
+    display: flex;
+    flex-direction: column;
+    margin-top: 3rem;
+    align-content: center;
+    font-size: 1.5rem;
+    text-align: center;
+    display: block;
+    font-weight: bold;
+}
+
+.deal-offre p {
+    margin-top: 2rem;
+}
+
+/*--------------------------------------------------------*/
+
+/* Invitation à l'inscription */
+.invit {
+    text-align: center;
+    margin-top: 5rem;
+}
+
+.invit a {
+    font-size: 3rem;
+  color: var(--secondaryColor);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.invit a:hover {
+    color: #21867a;
+  text-decoration: underline;
+}
+
+/*-------------------------------------------------------*/
+
+/* Début style engagement écologique */
+
+/* Titre Engagement */
+.engagement h2 {
+    margin-top: 3rem;
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+/*-------------------------------------------------------*/
+
+/* Style texte et image de la section engagement */
+.ecology-engagement {
+    display: flex;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    width: 100vw;
+    justify-content: center;
+    align-content: center;
+}
+
+.ecotext {
+    align-content: center;
+    width: 50vw;
+}
+
+.ecology-engagement h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+}
+
+.ecology-engagement h3 {
+    font-size: 2rem;
+    margin-top: 1rem;
+}
+
+.ecology-engagement h4 {
+    font-size: 2rem;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.ecology-engagement li {
+    margin: 5rem;
+    font-size: 1.5rem;
+    list-style-type: "- ";
+}
+
+.ecology-engagement img {
+    width: 90%;
+    height: auto;
+    display: block;
+    margin-top: 3rem;
+  margin-left: auto;
+    
+}
+
+/* --------------------------------------------- */
+/* 🔹 MEDIA QUERIES */
+/* --------------------------------------------- */
+
+/* Écrans de 1024px et moins (tablettes) */
+@media screen and (max-width: 1024px) {
+    .highlights {
+        flex-direction: column;
+        justify-content: center;
+        gap: 2rem;
+        font-size: 2rem;
+    }
+
+    .benefits,
+    .Offer {
+        width: 100%;
+        padding: 2rem;
+        text-align: center;
+    }
+
+    .benefits h2 {
+        font-size: 3rem;
+    }
+
+    .Offer img {
+        width: 12rem;
+    }
+
+    .gouvernment-info {
+        width: 25rem;
+    }
+
+    .ecology-engagement {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .ecology-engagement img {
+        display: none;
+    }
+
+    .ecology-engagement h2,
+    .ecology-engagement h3 {
+        font-size: 2rem;
+    }
+
+    .separator {
+        width: 90%;
+    }
+
+    .invit a {
+        font-size: 2.5rem;
+    }
+}
+
+/* Écrans de 768px et moins (tablettes et petits laptops) */
+@media screen and (max-width: 768px) {
+    .highlights {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .benefits,
+    .Offer {
+        width: 100%;
+        padding: 1.5rem;
+    }
+
+    .benefits h2 {
+        font-size: 2.5rem;
+    }
+
+    .Offer img {
+        width: 10rem;
+    }
+
+    .gouvernment-info {
+        width: 20rem;
+    }
+
+
+    .ecology-engagement img {
+        width: 90vw;
+    }
+    .ecology-engagement li {
+        margin: 2rem;
+    }
+
+    .ecology-engagement h2 {
+        font-size: 2rem;
+    }
+
+    .separator {
+        width: 100%;
+    }
+
+    .invit a {
+        font-size: 2rem;
+    }
+}
+
+/* Écrans de 480px et moins (mobiles) */
+@media screen and (max-width: 480px) {
+    .highlights {
+        flex-direction: column;
+    }
+
+    .benefits,
+    .Offer {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .benefits h2 {
+        font-size: 2rem;
+    }
+
+    .Offer img {
+        width: 8rem;
+    }
+
+    
+
+    .ecology-engagement img {
+        width: 90vw;
+    }
+
+    .separator {
+        width: 100%;
+    }
+
+    .invit a {
+        font-size: 1.8rem;
+    }
+}
+
+/* Écrans de 320px et moins (petits téléphones) */
+@media screen and (max-width: 320px) {
+    .highlights {
+        flex-direction: column;
+    }
+
+    .benefits,
+    .Offer {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    .benefits h2 h3 h4{
+        font-size: 1.2rem;
+    }
+    .benefits h3 h4{
+        font-size: 1rem;
+    }
+    .benefits p {
+        font-size:0.9rem;
+    }
+    .benefits img{
+        width: 10% ;
+        height: auto;
+    }
+    
+
+    .Offer img {
+        width: 6rem;
+    }
+    
+
+    .subvention-info a{
+        font-size: 1rem;
+    }
+    .subvention-info {
+        font-size: 1rem;
+    }
+
+    .invit a {
+        font-size: 1.2rem;
+    }
+    .engagement h2{
+        font-size: 1.2rem;
+    }
+
+    .ecotext h3 {
+        font-size: 1rem;
+        text-align: justify;
+
+    }
+    .ecotext li {
+        font-size: 1rem;
+        text-align: left
+
+    }
+    .ecotext h4{
+        font-size: 1rem;
+        text-align: justify;
+
+    }
+    
+}

@@ -1,0 +1,86 @@
+/* Messages au-dessus des champs */
+.field-message {
+    font-size: 0.85rem;
+    margin-top: -0.5rem;
+    margin-bottom: 0.25rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.error-message {
+    background-color: #fdd;
+    color: #900;
+}
+
+.success-message {
+    background-color: #dfd;
+    color: #060;
+}
+
+/* Popup central */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.popup-box {
+    background-color: var(--primaryColor);
+    padding: 20px 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    position: relative;
+    max-width: 400px;
+    text-align: center;
+    animation: fadein 0.3s ease-out;
+}
+
+.popup-close {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 24px;
+    color: #a00;
+    cursor: pointer;
+}
+
+.popup-ok {
+    margin-top: 15px;
+    padding: 6px 14px;
+    background-color: var(--secondaryColor);
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.trip-details {
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.value {
+    font-weight: normal;
+    color: #333;
+}
+
+
+/* Animation légère */
+@keyframes fadein {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}

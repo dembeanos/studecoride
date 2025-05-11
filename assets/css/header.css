@@ -1,0 +1,196 @@
+/* Initialisation de base */
+@import url('fonts/fonts.css');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --backgroundColor: rgba(218, 227, 236, 1);
+    --primaryColor: rgba(232, 248, 210, 1);
+    --secondaryColor: rgba(112, 193, 61, 1);
+}
+
+body {
+    font-family: 'Sansation', Arial, Helvetica, sans-serif;
+    line-height: 1.5;
+}
+
+html {
+    font-size: 62.5%; /* 62.5% de 16px = 10px */
+}
+
+/* Les déclarations susmentionnées seront reportées sur toutes les pages par héritage */
+
+/* Menu Bar */
+.menuBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 4rem 0rem 0rem;
+}
+
+li a {
+    text-decoration: none;
+    font-size: 60%;
+    color: inherit;
+    padding: 1rem;
+}
+
+.logo {
+    display: flex;
+    flex-direction: start;
+    width: 80%;
+    height: 0%;
+    
+}
+
+.menu-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Hamburger */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    gap: 5px;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: #333;
+    display: block;
+}
+
+/* Menu Responsive */
+.menu {
+    display: inline-flex;
+    list-style: none;
+    font-weight: bold;
+    font-size: 2rem;
+    flex-direction: flex-end;
+    margin-right: 1rem;
+    align-items: center;
+}
+
+.icon {
+    width: 3rem;
+    height: auto;
+    margin-right: 0.3rem;
+}
+
+@media (max-width: 768px) {
+    /* Adaptation des éléments à la petite résolution */
+    .menu-list {
+        display: none;
+        flex-direction: column;
+        background-color: #fff;
+        position: fixed;
+        top: 60px;
+        right: 3rem;
+                max-width: 20%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 10px 0;
+        z-index: 9999;
+    }
+
+    .menu-list.show {
+        display: flex;
+        width: 35%;
+    }
+
+    .menu {
+        margin: 10px 0;
+        text-align: center;
+        font-size: 1.6rem; /* Réduction de la taille de la police sur petit écran */
+        padding: 0 0 0 1rem;
+    }
+
+    .icon {
+        width: 2.5rem; /* Réduction de la taille des icônes */
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .logo {
+        display: flex;
+        justify-content: center;  /* Centrer horizontalement */
+        align-items: center;      /* Centrer verticalement */
+        width:  60%;
+        height: 0%; /* Ajuster la taille de la logo */
+    }
+}
+
+@media (min-width: 769px) {
+    .menu-list {
+        display: flex !important;
+    }
+
+    .hamburger {
+        display: none;
+    }
+}
+
+
+@media (max-width: 320px) {
+    /* Adaptation des éléments à la petite résolution */
+    .menuBar{
+        padding: 1rem 2rem 1rem 0rem;
+    }
+    .menu-list {
+        display: none;
+        flex-direction: column;
+        background-color: #fff;
+        position: fixed;
+        top: 60px;
+        right: 1.5rem;
+        max-width: 30%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 10px 0;
+        z-index: 9999;
+    }
+
+    .menu-list.show {
+        display: flex;
+        width: 30%;
+    }
+
+    .menu {
+        margin: 10px 0;
+        text-align: center;
+        font-size: 1.6rem; /* Réduction de la taille de la police sur petit écran */
+        padding: 0 0 0 1rem;
+    }
+
+    li a {
+        font-size: 40%;
+        padding: 0.2rem;
+    }
+    .icon {
+        width: 1.5rem; /* Réduction de la taille des icônes */
+    }
+
+    .hamburger {
+        display: flex;
+        width: 5%;
+        height: auto;
+    }
+
+    .logo {
+        display: flex;
+        justify-content: center;  /* Centrer horizontalement */
+        align-items: center;      /* Centrer verticalement */
+        width:  40%;
+        height: 0%; /* Ajuster la taille de la logo */
+    }
+}

@@ -1,0 +1,215 @@
+/* Fichier: message.css - Messagerie responsive */
+:root {
+  --primary-color: rgba(112, 193, 61, 1);
+  --secondary-color: rgba(112, 193, 61, 1);
+  --accent-color: rgba(112, 193, 61, 1);
+  --background: #f4f6f8;
+  --surface: #ffffff;
+  --text-color: #333333;
+  --border-color: #cccccc;
+  --radius: 0.5rem;
+  --gap: 1rem;
+  --transition: 0.3s;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--background);
+  color: var(--text-color);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--gap);
+}
+
+h1 {
+  text-align: center;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  margin: var(--gap) 0;
+  color: black;
+}
+
+/* Onglets */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: var(--gap);
+  flex-wrap: wrap;
+  margin-bottom: var(--gap);
+}
+
+.tab-button {
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  margin-top: 5rem;
+}
+
+.tab-button.active,
+.tab-button:hover {
+  background: var(--primary-color);
+  color: #fff;
+  border-color: var(--primary-color);
+}
+
+/* Grille messages réception et envoi */
+.standard-message,
+.send-message,
+.public-message {
+  display: none;
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  margin-bottom: var(--gap);
+}
+
+.standard-message.active,
+.send-message.active,
+.public-message.active {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: var(--gap);
+}
+
+/* Barre latérale */
+.sidebar {
+  background: var(--background);
+  padding: var(--gap);
+  border-right: 1px solid var(--border-color);
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.sidebar h3 {
+  margin-top: 0;
+  color: var(--secondary-color);
+}
+
+.ourMessage-list,
+.publicMessage-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.ourMessage-list li,
+.publicMessage-list li {
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.ourMessage-list li:hover,
+.publicMessage-list li:hover,
+.ourMessage-list li.active,
+.publicMessage-list li.active {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+/* Détails du message */
+.message-details {
+  padding: var(--gap);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.message-details form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.message-details input[type="text"],
+.message-details input[type="email"],
+.message-details textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  font-size: 1.5rem;
+  resize: vertical;
+}
+
+.message-details input[readonly],
+.message-details textarea[readonly] {
+  background: #f9f9f9;
+}
+
+.message-details button {
+  align-self: flex-start;
+  background: var(--secondary-color);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+}
+
+.message-details button:hover {
+  background: var(--secondary-color);
+  transform: scale(1.02);
+}
+
+/* Boîte de suggestions utilisateur */
+#userSuggestionBox {
+  position: absolute;
+  background: var(--surface);
+  border: 1px solid var(--border-color);
+  max-height: 200px;
+  overflow-y: auto;
+  width: calc(100% - 2px);
+  z-index: 100;
+  display: none;
+}
+
+#userSuggestionBox div {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-bottom: 1px solid var(--border-color);
+}
+
+#userSuggestionBox div img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+#userSuggestionBox div:hover {
+  background: var(--background);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .standard-message.active,
+  .send-message.active,
+  .public-message.active {
+    display: flex;
+    flex-direction: column;
+  }
+  .sidebar {
+    max-height: none;
+    border-right: none;
+    border-bottom: 1px solid var(--border-color);
+  }
+}
