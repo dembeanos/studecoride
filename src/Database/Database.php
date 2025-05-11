@@ -8,11 +8,11 @@ final class Database
 {
 
     private $pdo;
-    private $host = 'localhost';
-    private $port = '5432';
-    private $dbname = 'postgres';
-    private $username = 'postgres';
-    private $password = '231287';
+    private $host;
+    private $port;
+    private $dbname;
+    private $username;
+    private $password;
     private $isConnected = false;
 
     public function __construct()
