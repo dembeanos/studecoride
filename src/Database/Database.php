@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
-final class Database {
+use Dotenv\Dotenv;
+
+final class Database
+{
 
     private $pdo;
     private $host = 'localhost';
@@ -10,9 +13,20 @@ final class Database {
     private $dbname = 'postgres';
     private $username = 'postgres';
     private $password = '231287';
-    private $isConnected = false;  
+    private $isConnected = false;
 
-    public function __construct() {
+    public function __construct()
+    {
+        $dotenv = Dotenv::createImmutable(__DIR__);
+        $dotenv->load();
+
+        $this->host = $_ENV['PGSQL_HOST'];
+        $this->port = $_ENV['PGSQL_PORT'];
+        $this->dbname = $_ENV['PGSQL_DBNAME'];
+        $this->username = $_ENV['PGSQL_USERNAME'];
+        $this->password = $_ENV['PGSQL_PASSWORD'];
+
+
         try {
             $this->pdo = new PDO(
                 "pgsql:host={$this->host};port={$this->port};dbname={$this->dbname}",
@@ -29,16 +43,18 @@ final class Database {
         }
     }
 
-    public function getPdo() {
+    public function getPdo()
+    {
         return $this->pdo;
     }
 
-    public function isConnected() {
+    public function isConnected()
+    {
         return $this->isConnected;
     }
-    public function disconnect() {
+    public function disconnect()
+    {
         $this->pdo = null;
         $this->isConnected = false;
     }
 }
-?>

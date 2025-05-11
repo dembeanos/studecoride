@@ -7,6 +7,7 @@ require_once __DIR__ .'/../../vendor/autoload.php';
 //Importation des methode Mongo
 use MongoDB\Client;
 use MongoDB\Database;
+use Dotenv\Dotenv;
 
 final class DatabaseNoSql {
 
@@ -14,11 +15,14 @@ final class DatabaseNoSql {
     private Database $database;
 
     public function __construct() {
-        $host = 'localhost';
-        $port = 27017;
-        $username = 'php';
-        $password = 'j7krqxf8v23j42m4bjxygwr6w*';
-        $dbname = 'Ecoride';
+         $dotenv = Dotenv::createImmutable(__DIR__);
+        $dotenv->load();
+
+         $host = $_ENV['MONGO_HOST'];
+        $port = $_ENV['MONGO_PORT'];
+        $username = $_ENV['MONGO_USERNAME'];
+        $password = $_ENV['MONGO_PASSWORD'];
+        $dbname = $_ENV['MONGO_DBNAME'];
 
         $uri = "mongodb://$username:$password@$host:$port/$dbname";
 
