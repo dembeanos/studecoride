@@ -127,7 +127,7 @@ final class Login
 
         if ($admin !== false) {
             Session::setAdminId((int)$admin);
-            header('Location: /Ecoride/pages/admin/admin.php');
+            header('Location: /pages/admin/admin.php');
             exit();
         } else {
             $this->saveLog("Echec de la connexion erreur Login Admin non trouvé(redirectAdmin).", 'CRITICAL');
@@ -143,7 +143,7 @@ final class Login
 
         if ($employee !== false) {
             Session::setEmployeId((int)$employee);
-            header('Location: /Ecoride/pages/employe/employe.php');
+            header('Location: /pages/employe/employe.php');
             exit();
         } else {
             $this->saveLog("Echec de la connexion erreur Login employé non trouvé(redirectEmployee).", 'CRITICAL');
@@ -161,7 +161,7 @@ final class Login
             $userId = $statement->fetchColumn();
             if ($userId !== false) {
                 Session::setUserId((int)$userId);
-                header('Location: /Ecoride/index.php');
+                header('Location: /index.php');
                 exit();
             } else {
                 $this->saveLog("Echec de la connexion erreur Login user non trouvé(redirectUser).", 'CRITICAL');

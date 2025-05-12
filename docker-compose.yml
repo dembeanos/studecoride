@@ -1,0 +1,27 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgis/postgis
+    container_name: postgis-db
+    environment:
+      POSTGRES_USER: ${PGSQL_USERNAME}
+      POSTGRES_PASSWORD: ${PGSQL_PASSWORD}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    image: php:8.2-apache
+    container_name: web-app
+    depends_on:
+      - db
+    volumes:
+      - ./src:/var/www/html
+    ports:
+      - "8080:80"
+
+volumes:
+  pgdata:
+    driver: local

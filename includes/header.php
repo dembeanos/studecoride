@@ -26,7 +26,7 @@ if (isset($_POST['logout'])) {
     <ul class="menu-list" id="menuList">
         <li class="menu">
             <img class="icon" src="/assets/images/menu_icon/home.svg">
-            <a href="/Index.php" title="Accueil">Accueil</a>
+            <a href="/index.php" title="Accueil">Accueil</a>
         </li>
 
         <li class="menu">
