@@ -1,5 +1,5 @@
-<script src='/Ecoride/assets/js/api/map/map.js'></script>
-<script type='module' src="/Ecoride/assets/js/ui/menu/autocomplete.js"></script>
+<script src='/assets/js/api/map/map.js'></script>
+<script type='module' src="/assets/js/ui/menu/autocomplete.js"></script>
 
 <style>#departSuggestionBox, #arrivalSuggestionBox {
     position: absolute;
@@ -9,7 +9,7 @@
     overflow-y: auto;
     width: 100%;
     z-index: 10;
-    display: none;  /* Par défaut, la boîte est cachée */
+    display: none;  
 }
 
 #departSuggestionBox div, #arrivalSuggestionBox div {

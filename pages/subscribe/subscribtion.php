@@ -5,15 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription/Connexion</title>
-    <link rel="stylesheet" href="/Ecoride//assets/css/subscribtion.css">
-    <link rel="stylesheet" href="/Ecoride/assets/css/popup.css">
-    <script src="/Ecoride/assets/js/ui/event/popup.js"></script>
-    <script src="/Ecoride/assets/js/data-management/subscribtion/subscribtion.js"></script>
+    <link rel="stylesheet" href="/assets/css/subscribtion.css">
+    <link rel="stylesheet" href="/assets/css/popup.css">
+    <script src="/assets/js/ui/event/popup.js"></script>
+    <script src="/assets/js/data-management/subscribtion/subscribtion.js"></script>
 </head>
 
 <body>
     <header>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/includes/header.php'; ?>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
     </header>
     <main>
         <section class="formContact">
@@ -23,7 +23,7 @@
                 <div>
                     <h2>Informations Personnel</h2>
                 </div>
-                <a href="/Ecoride/Index.php">Vous avez deja un compte ?</a> <!--Voir pour faire ouvrir le popup dans le menu-->
+                <a href="/Index.php">Vous avez deja un compte ?</a> 
                 <section class="border">
                     <div>
                         <label for="lastName">Nom:</label>
@@ -81,15 +81,12 @@
                 </div>
             </form>
 
-            <!--
-                <p class="errorMessage">Tous les champs sont obligatoires.</p>
-                <p class="confirmationMessage">Merci pour votre message ! Nous vous répondrons dès que possible.</p>
-                -->
+            
         </section>
     </main>
 
     <footer>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/includes/footer.php'; ?>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
     </footer>
 </body>
 

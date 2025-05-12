@@ -4,12 +4,12 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Mention Légales Ecoride</title>
-        <link rel="stylesheet" href="/Ecoride/assets/css/mention.css">
+        <link rel="stylesheet" href="/assets/css/mention.css">
     </head>
     <body>
-        <!--Importation du fichier header évitant la redondance du code, plus ajout du header spécifique à la page-->
+      
         <header>
-            <?php include $_SERVER['DOCUMENT_ROOT'] .'/Ecoride/includes/header.php'; ?>
+            <?php include $_SERVER['DOCUMENT_ROOT'] .'/includes/header.php'; ?>
         </header>
         <main>
             <h1>Mention légales</h1>
@@ -54,7 +54,7 @@
 
             </main>
         <footer>
-            <?php include $_SERVER['DOCUMENT_ROOT'] .'/Ecoride/includes/footer.php'; ?>
+            <?php include $_SERVER['DOCUMENT_ROOT'] .'/includes/footer.php'; ?>
         </footer>
     </body>
 </html>

@@ -55,7 +55,7 @@ window.addEventListener('load', () => {
 
 async function fetchRequest(action) {
     try {
-        let request = await fetch(`/Ecoride/src/Router/messageRouter.php`, {
+        let request = await fetch(`/src/Router/messageRouter.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -79,7 +79,7 @@ async function fetchRequest(action) {
 
 
 /*
-// En cours de developpement 
+// En cours de developpement --------------------
 
 async function deleteMessage(selectedMessageId) {
     try {

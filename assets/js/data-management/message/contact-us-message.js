@@ -8,7 +8,6 @@ window.addEventListener('load', function () {
     let message = document.getElementById('message');
     let sendButton = document.getElementById('send');
 
-    // Affiche le champ custom si "autre" est sélectionné
     objectPurpose.addEventListener('change', function () {
         if (objectPurpose.value === 'autre') {
             divOther.style.display = 'block';
@@ -21,7 +20,6 @@ window.addEventListener('load', function () {
     sendButton.addEventListener('click', async function (event) {
         event.preventDefault();
 
-        // On choisit l'objet final selon la sélection
         let finalObject = objectPurpose.value === 'autre'
             ? objectPerso.value
             : objectPurpose.value;
@@ -35,7 +33,7 @@ window.addEventListener('load', function () {
         };
 
         try {
-            const response = await fetch(`Ecoride/src/Router/routeurMessage.php`, {
+            const response = await fetch(`/src/Router/routeurMessage.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

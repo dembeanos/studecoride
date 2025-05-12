@@ -1,6 +1,6 @@
 <?php 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/src/Database/Database.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/src/Authentification/Login.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/src/Database/Database.php';
+require_once $_SERVER['DOCUMENT_ROOT'] . '/src/Authentification/Login.php';
 
 session_start();
 
@@ -29,12 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/Ecoride/assets/css/connexion.css">
+    <link rel="stylesheet" href="/assets/css/connexion.css">
     <title>Espace Connexion</title>
 </head>
 <body>
     <header>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/includes/header.php'; ?>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
         <h1>Espace Connexion</h1>
     </header>
     
@@ -68,12 +68,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <button class="btn-primary" type="submit" name="send" id="send">Se Connecter</button>
         </div>
         <div>
-            <a href="/Ecoride/pages/subscribe/subscribtion.php"> Vous n'avez pas encore de compte ? Inscrivez-vous ici</a>
+            <a href="/pages/subscribe/subscribtion.php"> Vous n'avez pas encore de compte ? Inscrivez-vous ici</a>
         </div>
     </form>
    
     <footer>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/includes/footer.php'; ?>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
     </footer>
 </body>
 </html>

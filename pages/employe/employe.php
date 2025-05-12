@@ -1,5 +1,5 @@
 <?php
-require $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/src/Authentification/auth.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/src/Authentification/auth.php';
 checkAuthEmploye();
 ?>
 
@@ -9,15 +9,15 @@ checkAuthEmploye();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type="module" src='/Ecoride/assets/js/data-management/employees/employe-manager.js'></script>
-    <script src='../../assets/js/ui/event/popup.js'></script>
-    <link rel="stylesheet" href='/Ecoride/assets/css/popup.css'>
-    <link rel="stylesheet" href="/Ecoride/assets/css/utilisateur.css">
+    <script type="module" src='/assets/js/data-management/employees/employe-manager.js'></script>
+    <script src='/assets/js/ui/event/popup.js'></script>
+    <link rel="stylesheet" href='/assets/css/popup.css'>
+    <link rel="stylesheet" href="/assets/css/utilisateur.css">
 </head>
 
 <body>
     <header>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/includes/header.php'; ?>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
         <h1>Bienvenue dans votre Espace</h1>
     </header>
 
@@ -102,7 +102,7 @@ checkAuthEmploye();
                         <h2>Avis</h2>
 
                         <div class="header-reservation">
-                        <!-- Filtres de tri -->
+               
                         <div>
                             <span>Référence Opinion</span>
                             <button id="sortOpinionId">Trier</button>
@@ -140,7 +140,6 @@ checkAuthEmploye();
                         </div>
                     </div>
 
-                    <!-- Pagination -->
                     <div id="pagination">
                         <button id="prevPage">Précédent</button>
                         <span id="currentPage">Page 1</span>
@@ -152,7 +151,7 @@ checkAuthEmploye();
     </div>
 
     <footer>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/includes/footer.php'; ?>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
     </footer>
 </body>
 

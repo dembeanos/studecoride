@@ -83,7 +83,7 @@ import {
 
 async function fetchRequest(action) {
     try {
-        let request = await fetch(`/Ecoride/src/Router/adminRoute.php`, {
+        let request = await fetch(`/src/Router/adminRoute.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -318,7 +318,7 @@ export async function employe() {
 
         async function fetchRequest(formData) {
             try {
-                let request = await fetch('/Ecoride/src/Router/subscribeRoute.php', {
+                let request = await fetch('/src/Router/subscribeRoute.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -437,22 +437,6 @@ export async function employe() {
 
 
     };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 export async function tripStat() {

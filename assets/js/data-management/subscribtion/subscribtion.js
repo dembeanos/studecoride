@@ -41,7 +41,7 @@ window.addEventListener('load', event => {
 
     async function fetchRequest(formData) {
         try {
-            let request = await fetch(`/Ecoride/src/Router/subscribeRoute.php`, {
+            let request = await fetch(`/src/Router/subscribeRoute.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

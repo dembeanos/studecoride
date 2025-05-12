@@ -7,23 +7,23 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
 
-    <link rel="stylesheet" href="/Ecoride/assets/css/covoiturage.css">
+    <link rel="stylesheet" href="/assets/css/covoiturage.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.css" />
-    <link rel="stylesheet" href="/Ecoride/assets/css/popup.css">
+    <link rel="stylesheet" href="/assets/css/popup.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.min.js"></script>
-    <script src="/Ecoride/assets/js/ui/event/popup.js"></script>
-    <script type="module" src="/Ecoride/assets/js/ui/covoiturage/results.js"></script>
-    <script type="module" src="/Ecoride/assets/js/api/map/map.js"></script>
-    <script type="module" src="/Ecoride/assets/js/ui/menu/autocomplete.js"></script>
-    <script type="module" src="/Ecoride/assets/js/data-management/search/search.js"></script>
+    <script src="/assets/js/ui/event/popup.js"></script>
+    <script type="module" src="/assets/js/ui/covoiturage/results.js"></script>
+    <script type="module" src="/assets/js/api/map/map.js"></script>
+    <script type="module" src="/assets/js/ui/menu/autocomplete.js"></script>
+    <script type="module" src="/assets/js/data-management/search/search.js"></script>
 
     <title>Recherche de trajets - EcoRide</title>
 </head>
 <body>
     <header>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/includes/header.php'; ?>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
     </header>
 
     <div class="pageIntro">
@@ -155,13 +155,13 @@
         </div>
         <div class="pubImg">
             <a target="_blank" rel="noopener noreferrer" href="https://www.booking.com/index.fr.html" title="Vers le site de Booking">
-                <img src="/Ecoride/assets/images/covoiturage/booking.png" alt="Logo Booking">
+                <img src="/assets/images/covoiturage/booking.png" alt="Logo Booking">
             </a>
         </div>
     </article>
 
     <footer>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/includes/footer.php'; ?>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
     </footer>
 </body>
 </html>

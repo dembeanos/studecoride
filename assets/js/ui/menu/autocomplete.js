@@ -30,7 +30,7 @@ window.addEventListener('load', function () {
 
 // Méthode fetch d'envoi reception des données
 async function fetchRequest(data) {
-    let request = await fetch(`/Ecoride/src/Router/cityRoute.php`, {
+    let request = await fetch(`/src/Router/cityRoute.php`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

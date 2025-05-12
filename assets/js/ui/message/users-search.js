@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
     async function fetchRequest(action, data) {
         try {
             console.log('Données envoyées :', data);
-            const response = await fetch('/Ecoride/src/Router/messageRouter.php', {
+            const response = await fetch('/src/Router/messageRouter.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

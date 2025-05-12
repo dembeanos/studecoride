@@ -40,7 +40,7 @@ async function opinion(reservationId) {
         };
 
         try {
-            const response = await fetch(`/Ecoride/src/Router/userRoute.php`, {
+            const response = await fetch(`/src/Router/userRoute.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

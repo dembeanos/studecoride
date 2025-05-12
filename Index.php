@@ -12,7 +12,7 @@
     <meta property="og:url" content="http://www.ecoride.com/" />
     <meta property="og:locale" content="fr_FR" />
     <title>Ecoride : Votre solution de covoiturage écologique et pratique</title>
-    <link rel="stylesheet" href="assets/css/home.css">
+    <link rel="stylesheet" href="/assets/css/home.css">
     <link rel="canonical" href="http://www.ecoride.com/" />
 </head>
 

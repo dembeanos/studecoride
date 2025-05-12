@@ -75,7 +75,7 @@ import {
 
 async function fetchRequest(action) {
     try {
-        let request = await fetch(`/Ecoride/src/Router/employeRoute.php`, {
+        let request = await fetch(`/src/Router/employeRoute.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

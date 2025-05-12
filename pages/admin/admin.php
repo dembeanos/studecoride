@@ -1,5 +1,5 @@
 <?php
-require $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/src/Authentification/auth.php';
+require $_SERVER['DOCUMENT_ROOT'] . '/src/Authentification/auth.php';
 checkAuthAdmin();
 ?>
 
@@ -9,18 +9,18 @@ checkAuthAdmin();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script type='module' src="/Ecoride/assets/js/data-management/admins/admin-manager.js"></script>
+    <script type='module' src="/assets/js/data-management/admins/admin-manager.js"></script>
     <script src='../../assets/js/ui/event/popup.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href='/Ecoride/assets/css/popup.css'>
-    <link rel="stylesheet" href="/Ecoride/assets/css/utilisateur.css">
+    <link rel="stylesheet" href='/assets/css/popup.css'>
+    <link rel="stylesheet" href="/assets/css/utilisateur.css">
     <title>Espace Administrateur</title>
 </head>
 
 <body>
 
     <header>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/includes/header.php';
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
         $page = isset($_GET['page']) ? $_GET['page'] : 'admin';
         ?>
         <h1>Bienvenue dans votre Espace Administrateur</h1>
@@ -40,7 +40,6 @@ checkAuthAdmin();
 
         <main>
 
-            <!-- Section Profil -->
             <section class="pages" id="profil">
                 <fieldset class="form-contact">
                     <legend>Vos Informations</legend>
@@ -75,7 +74,6 @@ checkAuthAdmin();
                     </form>
                 </fieldset>
 
-                <!-- Section Changement de mot de passe -->
                 <fieldset class="formPassword">
                     <legend>Changer de Mot de passe</legend>
                     <form id="formPassword" action="/changer-mdp" method="POST">
@@ -92,7 +90,6 @@ checkAuthAdmin();
                     </form>
                 </fieldset>
 
-                <!-- Section Photo de profil -->
                 <fieldset class="photo-profil">
                     <legend>Photo de Profil</legend>
                     <img id="adminPhotoProfil" alt="Photo de profil">
@@ -115,17 +112,15 @@ checkAuthAdmin();
 
                 .userRow>div {
                     width: 150px;
-                    /* fixe pour alignement, ajustable */
                     padding: 5px;
                     border-bottom: 1px solid #ccc;
                 }
             </style>
-            <!-- Section Utilisateurs -->
             <section class="pages" id="utilisateurs">
                 <fieldset>
                     <h2>Utilisateurs</h2>
                     <div class="header-reservation">
-                        <!-- Filtres de tri -->
+                 
                         <div>
                             <span>Référence Utilisateur</span>
                             <button id="sortUserid">Trier</button>
@@ -186,7 +181,6 @@ checkAuthAdmin();
                         </div>
                     </div>
 
-                    <!-- Pagination -->
                     <div id="pagination">
                         <button id="prevPage">Précédent</button>
                         <span id="currentPage">Page 1</span>
@@ -196,7 +190,6 @@ checkAuthAdmin();
             </section>
 
 
-            <!-- Section Employés -->
             <section class="pages" id="employes">
                 <fieldset>
                     <legend>Ajout d'un utilisateur</legend>
@@ -266,7 +259,7 @@ checkAuthAdmin();
                 <fieldset>
                     <h2>Employés</h2>
                     < <div class="header-employe">
-                        <!-- Filtres de tri -->
+                   
                         <div>
                             <span>Référence Employe</span>
                             <button id="sortEmployeid">Trier</button>
@@ -315,7 +308,7 @@ checkAuthAdmin();
                         </div>
                     </div>
 
-                    <!-- Pagination -->
+              
                     <div id="pagination">
                         <button id="employePrevPage">Précédent</button>
                         <span id="employeCurrentPage">Page 1</span>
@@ -324,7 +317,7 @@ checkAuthAdmin();
                 </fieldset>
             </section>
 
-            <!-- Section Covoiturage -->
+        
             <section class="pages" id="covoiturage">
                 <fieldset>
                     <h2>Surveillance Covoiturage</h2>
@@ -335,7 +328,7 @@ checkAuthAdmin();
                 </fieldset>
             </section>
 
-            <!-- Section Chiffre d'affaire -->
+     
             <section class="pages" id="chiffreAffaire">
                 <fieldset>
                     <h2>Chiffre d'affaire</h2>
@@ -346,12 +339,12 @@ checkAuthAdmin();
                 </fieldset>
             </section>
 
-            <!-- Section Moniteur d'erreurs -->
+      
             <section class="pages" id="moniteurErreurs">
                 <fieldset>
                     <h2>Logs</h2>
                     <div class="header-log">
-                        <!-- Filtres de tri -->
+                   
                         <div>
                             <span>Date Evenement</span>
                             <button id="sortLogDate">Trier</button>
@@ -373,7 +366,7 @@ checkAuthAdmin();
                         </div>
                     </div>
 
-                    <!-- Pagination -->
+              
                     <div id="pagination">
                         <button id="prevLogPage">Précédent</button>
                         <span id="currentLogPage">Page 1</span>
@@ -386,7 +379,7 @@ checkAuthAdmin();
     </div>
 
     <footer>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/includes/footer.php'; ?>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
     </footer>
 
 </body>

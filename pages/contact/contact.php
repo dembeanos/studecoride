@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contactez-Nous</title>
-    <link rel="stylesheet" href="/Ecoride/assets/css/contact.css">
-    <link rel="stylesheet" href="/Ecoride/assets/css/popup.css">
-    <script src="/Ecoride/assets/js/ui/event/popup.js"></script>
-    <script src='../../assets/js/data-management/message/contact-us-message.js'></script>
+    <link rel="stylesheet" href="/assets/css/contact.css">
+    <link rel="stylesheet" href="/assets/css/popup.css">
+    <script src="/assets/js/ui/event/popup.js"></script>
+    <script src='/assets/js/data-management/message/contact-us-message.js'></script>
 </head>
 
 <body>
     <header>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/includes/header.php'; ?>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
     </header>
     <main>
         <fieldset class="formContact">
@@ -55,7 +55,7 @@
 
     </main>
     <footer>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/includes/footer.php'; ?>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
     </footer>
 </body>
 

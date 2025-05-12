@@ -155,7 +155,7 @@ import { sendOpinion } from "./opinion.js";
 
 async function fetchRequest(action) {
     try {
-        let request = await fetch(`/Ecoride/src/Router/userRoute.php`, {
+        let request = await fetch(`/src/Router/userRoute.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -600,7 +600,7 @@ async function tripManager() {
                     let deleteButton = document.createElement('button');
                     deleteButton.textContent = '❌ Annuler';
                     deleteButton.classList.add('delete-trip');
-                    deleteButton.dataset.tripId = trip.offerid;  // Ici, offerid est garanti d'exister
+                    deleteButton.dataset.tripId = trip.offerid; 
                     deleteButton.type = 'submit';
             
                     action.innerHTML = '';
@@ -614,7 +614,7 @@ async function tripManager() {
                     let endTrip = document.createElement('button');
                     endTrip.textContent = 'Arrivée';
                     endTrip.classList.add('end-trip');
-                    endTrip.dataset.tripId = trip.offerid;  // Ici, offerid est garanti d'exister
+                    endTrip.dataset.tripId = trip.offerid; 
                     endTrip.type = 'submit';
             
                     action.innerHTML = '';
@@ -632,7 +632,7 @@ async function tripManager() {
                     let startTrip = document.createElement('button');
                     startTrip.textContent = 'Démarrer';
                     startTrip.classList.add('start-trip');
-                    startTrip.dataset.tripId = trip.offerid;  // Ici, offerid est garanti d'exister
+                    startTrip.dataset.tripId = trip.offerid;  
                     startTrip.type = 'submit';
             
                     action.innerHTML = '';
@@ -655,7 +655,7 @@ async function tripManager() {
                             let endTrip = document.createElement('button');
                             endTrip.textContent = 'Arrivée';
                             endTrip.classList.add('end-trip');
-                            endTrip.dataset.tripId = trip.offerid;  // Ici, offerid est garanti d'exister
+                            endTrip.dataset.tripId = trip.offerid; 
                             endTrip.type = 'submit';
             
                             action.innerHTML = '';
@@ -669,7 +669,6 @@ async function tripManager() {
             });
             parentElement.appendChild(fragment);
         } else {
-            // Supprimer anciennes lignes et afficher "Aucun trajet"
             parentElement.querySelectorAll('.tripLine').forEach(line => line.remove());
 
             const noTripMessage = document.createElement('p');

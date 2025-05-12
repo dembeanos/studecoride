@@ -3,16 +3,14 @@ import { initAdminVar } from "./admin-manager.js";
 import {adminInfo} from "./admin-manager.js";
 
 
-
 async function fetchRequestUpdate(action, data) {
     try {
-        let response = await fetch(`/Ecoride/src/Router/adminRoute.php`, {
+        let response = await fetch(`/src/Router/adminRoute.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action, data })
         });
 
-        // Vérifier que la réponse est correcte
         if (!response.ok) {
             throw new Error(`Erreur HTTP: ${response.status}`);
         }
@@ -79,21 +77,21 @@ export async function updatePhoto() {
             const formData = new FormData();
             formData.append('action', 'updatePhoto');
             formData.append('updatePhoto', photo);
-            const response = await fetch('/Ecoride/src/Profile/Admin/adminRequestRoute.php', { method: 'POST', body: formData });
+            const response = await fetch('/src/Profile/Admin/adminRequestRoute.php', { method: 'POST', body: formData });
             const responseText = await response.text();
-            console.log("Réponse brute du serveur:", responseText); // Ajoute un log pour afficher la réponse
+            console.log("Réponse brute du serveur:", responseText);
 
             try {
-                const updateResponse = JSON.parse(responseText); // Essaie de parser la réponse en JSON
+                const updateResponse = JSON.parse(responseText);
                 if (updateResponse.status === 'success') {
-                    console.dir(updateResponse); // Affiche le message si succès
+                    console.dir(updateResponse);
                 } else {
-                    console.error('Erreur:', updateResponse.message); // Affiche le message d'erreur si échec
+                    console.error('Erreur:', updateResponse.message); 
                 }
                 userInfo();
             } catch (error) {
                 console.error('Erreur de parsing JSON:', error);
-                console.log('Contenu de la réponse:', responseText); // Affiche la réponse brute pour déboguer
+                console.log('Contenu de la réponse:', responseText); 
             }
         } catch (error) {
             console.error('Erreur de requête:', error);

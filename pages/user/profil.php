@@ -4,25 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/Ecoride/assets/css/utilisateur.css">
+    <link rel="stylesheet" href="/assets/css/utilisateur.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.css">
-    <link rel="stylesheet" href="/Ecoride/assets/css/popup.css">
+    <link rel="stylesheet" href="/assets/css/popup.css">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-routing-machine/3.2.12/leaflet-routing-machine.min.js"></script>
-    <script src="/Ecoride/assets/js/ui/event/popup.js"></script>
-    <script src="/Ecoride/assets/js/api/map/map.js"></script>
-    <script type="module" src="/Ecoride/assets/js/data-management/users/user-manager.js"></script>
-    <script type="module" src="/Ecoride/assets/js/data-management/users.opinion.js"></script>
+    <script src="/assets/js/ui/event/popup.js"></script>
+    <script src="/assets/js/api/map/map.js"></script>
+    <script type="module" src="/assets/js/data-management/users/user-manager.js"></script>
+    <script type="module" src="/assets/js/data-management/users.opinion.js"></script>
     <title>Espace utilisateur</title>
 </head>
 
 <body>
     <header>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/includes/header.php'; ?>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
         <h1 id="page-title">Bienvenue dans votre Espace</h1>
     </header>
 
@@ -38,10 +38,10 @@
         </aside>
 
         <main>
-            <!-- PROFIL: deux colonnes -->
+     
             <section id="pageProfil" class="pages" aria-labelledby="page-title">
                 <div class="profil-container">
-                    <!-- Colonne gauche: formulaire de contact -->
+                
                     <fieldset class="form-contact" aria-describedby="info-desc">
                         <legend>Vos Informations</legend>
                         <form method="POST" aria-describedby="info-desc">
@@ -80,7 +80,7 @@
                     </fieldset>
 
                     <div class="profil-colonne-droite">
-                        <!-- Formulaire de photo de profil -->
+              
                         <fieldset class="photo-profil">
                             <legend>Photo de Profil</legend>
                             <img id="userPhotoProfil" alt="Photo de profil">
@@ -105,7 +105,7 @@
                                 <button type="submit" id="sendPassword" name="sendPassword">Valider</button>
                             </form>
                         </fieldset>
-                        <!-- Formulaire de sélection du rôle -->
+              
                     </div>
                     <form class='roleChange' method="POST">
                         <p>Sélectionnez votre rôle :</p>
@@ -381,7 +381,7 @@
         </main>
     </div>
     <footer>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/Ecoride/includes/footer.php'; ?>
+        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
     </footer>
 </body>
 
