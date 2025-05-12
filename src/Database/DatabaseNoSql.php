@@ -14,10 +14,8 @@ final class DatabaseNoSql {
     private Database $database;
 
     public function __construct() {
-        $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-        $dotenv->load();
-
-        $uri = $_ENV['MONGO_URI'];
+        
+        $uri = getenv('MONGO_URI');
 
         try {
             $this->client = new Client($uri);

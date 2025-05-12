@@ -17,9 +17,6 @@ final class Database
 
     public function __construct()
     {
-        $dotenv = Dotenv::createImmutable(__DIR__);
-        $dotenv->load();
-
         $this->host = $_ENV['PGSQL_HOST'];
         $this->port = $_ENV['PGSQL_PORT'];
         $this->dbname = $_ENV['PGSQL_DBNAME'];
