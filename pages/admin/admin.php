@@ -1,5 +1,5 @@
 <?php
-require $_SERVER['DOCUMENT_ROOT'] . '/src/Authentification/auth.php';
+require __DIR__ . '/../../src/Authentification/auth.php';
 checkAuthAdmin();
 ?>
 
@@ -20,7 +20,7 @@ checkAuthAdmin();
 <body>
 
     <header>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php';
+        <?php include __DIR__ . '/../../includes/header.php';
         $page = isset($_GET['page']) ? $_GET['page'] : 'admin';
         ?>
         <h1>Bienvenue dans votre Espace Administrateur</h1>
@@ -379,7 +379,7 @@ checkAuthAdmin();
     </div>
 
     <footer>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
+        <?php include __DIR__. '/../../includes/footer.php'; ?>
     </footer>
 
 </body>

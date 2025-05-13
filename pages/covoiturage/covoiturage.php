@@ -23,7 +23,7 @@
 </head>
 <body>
     <header>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
+        <?php include include __DIR__ . '/../../includes/header.php'; ?>
     </header>
 
     <div class="pageIntro">
@@ -161,7 +161,7 @@
     </article>
 
     <footer>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
+        <?php include __DIR__ . '/../../includes/footer.php'; ?>
     </footer>
 </body>
 </html>

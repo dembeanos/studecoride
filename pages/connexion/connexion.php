@@ -1,6 +1,6 @@
 <?php 
-require_once $_SERVER['DOCUMENT_ROOT'] . '/src/Database/Database.php';
-require_once $_SERVER['DOCUMENT_ROOT'] . '/src/Authentification/Login.php';
+require_once __DIR__ . '/../../src/Database/Database.php';
+require_once __DIR__ . '/../../src/Authentification/Login.php';
 
 session_start();
 
@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </form>
    
     <footer>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
+        <?php include __DIR__. '/../../includes/footer.php'; ?>
     </footer>
 </body>
 </html>

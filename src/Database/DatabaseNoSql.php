@@ -6,7 +6,6 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 
 use MongoDB\Client;
 use MongoDB\Database;
-use Dotenv\Dotenv;
 
 final class DatabaseNoSql {
 

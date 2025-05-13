@@ -1,5 +1,5 @@
 <?php
-require $_SERVER['DOCUMENT_ROOT'] . '/src/Authentification/auth.php';
+require __DIR__. '/../../src/Authentification/auth.php';
 checkAuthEmploye();
 ?>
 
@@ -17,7 +17,7 @@ checkAuthEmploye();
 
 <body>
     <header>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
+        <?php include __DIR__ . '/../../includes/header.php'; ?>
         <h1>Bienvenue dans votre Espace</h1>
     </header>
 
@@ -151,7 +151,7 @@ checkAuthEmploye();
     </div>
 
     <footer>
-        <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
+        <?php include __DIR__. '/../../includes/footer.php'; ?>
     </footer>
 </body>
 

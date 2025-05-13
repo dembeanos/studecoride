@@ -9,7 +9,7 @@
     <body>
       
         <header>
-            <?php include $_SERVER['DOCUMENT_ROOT'] .'/includes/header.php'; ?>
+            <?php include __DIR__. '/../../includes/header.php'; ?>
         </header>
         <main>
             <h1>Mention légales</h1>
@@ -54,7 +54,7 @@
 
             </main>
         <footer>
-            <?php include $_SERVER['DOCUMENT_ROOT'] .'/includes/footer.php'; ?>
+            <?php include __DIR__. '/../../includes/footer.php'; ?>
         </footer>
     </body>
 </html>

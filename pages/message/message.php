@@ -1,5 +1,5 @@
 <?php
-require $_SERVER['DOCUMENT_ROOT'] . '/src/Authentification/auth.php'; 
+require  __DIR__. '/../../src/Authentification/auth.php'; 
 
 ?>
 <!DOCTYPE html>
@@ -16,7 +16,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/src/Authentification/auth.php';
     <script src='/assets/js/ui/message/users-search.js'></script>
 </head>
 <header>
-    <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/header.php'; ?>
+    <?php include __DIR__. '/../../includes/header.php'; ?>
 </header>
 <body>
     <div class="container">
@@ -156,7 +156,7 @@ require $_SERVER['DOCUMENT_ROOT'] . '/src/Authentification/auth.php';
 
 </body>
 <footer>
-    <?php include $_SERVER['DOCUMENT_ROOT'] . '/includes/footer.php'; ?>
+    <?php include __DIR__. '/../../includes/footer.php'; ?>
 </footer>
 
 </html>
