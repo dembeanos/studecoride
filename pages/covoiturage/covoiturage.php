@@ -23,7 +23,7 @@
 </head>
 <body>
     <header>
-        <?php include include __DIR__ . '/../../includes/header.php'; ?>
+        <?php include __DIR__ . '/../../includes/header.php'; ?>
     </header>
 
     <div class="pageIntro">

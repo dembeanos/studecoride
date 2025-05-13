@@ -43,6 +43,7 @@ async function fetchRequest(data) {
     }
 
     const responseText = await request.text();
+    console.log(responseText)
 
     try {
         return JSON.parse(responseText);

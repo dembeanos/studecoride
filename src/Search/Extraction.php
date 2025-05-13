@@ -177,7 +177,7 @@ class Extraction extends Filtres
 
             return $validOffers;
         } catch (PDOException $e) {
-            $this->saveLog("Erreur lors de la recherche des offres : " . $e->getMessage(), 'FATAL');
+            return $this->saveLog("Erreur lors de la recherche des offres : " . $e->getMessage(), 'FATAL');
         }
     }
 

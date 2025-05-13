@@ -90,7 +90,7 @@ export async function updatePhoto() {
             const formData = new FormData();
             formData.append('action', 'updatePhoto');
             formData.append('updatePhoto', photo);
-            const response = await fetch('/Ecoride/src/Router/userRoute.php', { method: 'POST', body: formData });
+            const response = await fetch('/src/Router/userRoute.php', { method: 'POST', body: formData });
             const responseText = await response.text();
             console.log("Réponse brute du serveur:", responseText); 
 

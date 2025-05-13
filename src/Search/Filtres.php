@@ -31,7 +31,7 @@ class Filtres
         $eco,
         $duration,
         $note,
-        $zone,
+        $zone
     ) {
 
         $this->setInseeDepart($inseeDepart);
@@ -71,7 +71,7 @@ protected function setInseeArrival($inseeArrival)
     // Utilisation de l'objet DateTime pour vérifier que la date est valide et au format Y-m-d
    protected function setDepartDate($departDate)
 {
-    $date = DateTime::createFromFormat('Y-m-d', $departDate);
+    $date = \DateTime::createFromFormat('Y-m-d', $departDate);
     if ($date && $date->format('Y-m-d') === $departDate) {
         $this->departDate = $departDate;
     } else {
