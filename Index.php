@@ -1,3 +1,6 @@
+<?php
+require_once __DIR__ . '/src/Authentification/auth.php';
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -19,7 +22,15 @@
 <body>
     <header>
         <?php include 'includes/header.php'; ?>
-        <h1>Bienvenue Chez Ecoride !</h1>
+        <h1>
+            <?php 
+            if (isUserConnected() || isAdminConnected() || isEmployeConnected()) {
+                echo "Bienvenue " . $_SESSION['firstName'] . " chez Ecoride" . " !";
+            } else {
+                echo "Bienvenue Chez Ecoride !";
+            }
+        ?>
+        </h1>
         <div aria-label="Presentation de l'entreprise" class="presentation">
             <p>EcoRide est la solution de covoiturage écologique et économique qui simplifie vos trajets.</p>
             <p>Trouvez ou proposez un trajet en quelques clics, partagez vos frais, réduisez vos émissions de CO₂.</p>

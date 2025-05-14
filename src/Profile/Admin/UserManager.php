@@ -64,8 +64,10 @@ final class UserManager {
         if (!$this->checkIfAuthorized()) {
             return $this->sendToDev('L\'ID administrateur est invalide.');
         }
-        $sql = "SELECT idlogin, userid, lastname, firstname, road, roadcomplement,zipcode, city,phone, 
-        updateddate, creationdate, userrole, credit, note FROM users";
+        $sql = "SELECT u.idlogin, u.userid, u.lastname, u.firstname, u.road, u.roadcomplement,u.zipcode, u.city,phone, 
+        u.updateddate, u.creationdate, u.userrole, u.credit, u.note FROM users u
+        JOIN logins l ON l.loginid = u.idlogin
+         WHERE l.status = 'ok'";
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);

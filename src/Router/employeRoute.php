@@ -1,4 +1,5 @@
 <?php
+session_start();
 // Ce fichier suit la même logique que userRoute, voir commentaires dans userRoute.php
 
 require_once __DIR__ .'/../Profile/Employee/Employee.php';
@@ -7,7 +8,6 @@ require_once __DIR__ .'/../Profile/shared/Photo.php';
 require_once __DIR__ .'/../Profile/shared/Secure.php';
 require_once __DIR__ .'/../Profile/shared/Messages.php';
 
-session_start();
 
 $employeId = $_SESSION['employeId'];
 

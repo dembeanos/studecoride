@@ -207,7 +207,7 @@ final class Trip
     $dateDepart, $dateArrival, $price, $duration, $car, $preference, $placeAvailable, $inseeArrival, $inseeDepart) {
 
         try {
-
+             $this->pdo->beginTransaction();
             $query = "SELECT COUNT(*) FROM offers 
                       WHERE citydepart = :cityDepart
                       AND arrivalcity = :arrivalCity
@@ -266,9 +266,10 @@ final class Trip
             $statement->bindValue(':inseeDepart', $this->getInseeDepart());
 
             $statement->execute();
-
+             $this->pdo->commit();
             return $this->sendUserSuccess('Votre proposition de trajet à bien été prise en compte', 'addTrip');
         } catch (Exception $e) {
+            $this->pdo->rollBack();
             $this->sendPopup('Oups ! Échec de l\'enregistrement de votre trajet, vérifiez les champs ou réessayez un peu plus tard.');
             return $this->saveLog('Erreur lors de l\enregistrement d\'une offres, Pour : '.$this->getUserId().$e,'FATAL');
         }

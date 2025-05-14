@@ -1,5 +1,5 @@
 <?php
-require __DIR__. '/../../src/Authentification/auth.php';
+require_once __DIR__. '/../../src/Authentification/auth.php';
 checkAuthEmploye();
 ?>
 
@@ -18,7 +18,7 @@ checkAuthEmploye();
 <body>
     <header>
         <?php include __DIR__ . '/../../includes/header.php'; ?>
-        <h1>Bienvenue dans votre Espace</h1>
+        <h1>Espace Employé de <?php echo $_SESSION['firstName']?></h1>
     </header>
 
     <div class="profil-contain">

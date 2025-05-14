@@ -1,6 +1,5 @@
 <?php
-require  __DIR__. '/../../src/Authentification/auth.php'; 
-
+require_once  __DIR__. '/../../src/Authentification/auth.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -27,7 +26,7 @@ require  __DIR__. '/../../src/Authentification/auth.php';
         <div class="tabs">
             <button class="tab-button active" data-tab="receive-message">Boite de reception</button>
             <button class="tab-button active" data-tab="send-message">Envoyer un message</button>
-            <?php if (isset($_SESSION['employeId']) || isset($_SESSION['adminId'])): ?>
+            <?php if (isUserConnected() || isAdminConnected()): ?>
                 <button class="tab-button" data-tab="messagerie-visiteurs">Messages visiteurs</button>
             <?php endif; ?>
         </div>

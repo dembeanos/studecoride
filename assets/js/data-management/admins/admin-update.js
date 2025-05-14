@@ -70,39 +70,50 @@ export async function updatePassword() {
 
 
 export async function updatePhoto() {
-    let {inputPhoto} = initAdminVar();
+    let { inputPhoto } = initAdminVar();
     let photo = inputPhoto.files[0];
+
     if (photo) {
+        const formData = new FormData();
+
+        formData.append('action', 'updatePhoto');
+        formData.append('updatePhoto', photo);
+
+        console.log("FormData contient :");
+        for (let pair of formData.entries()) {
+            console.log(pair[0] + ' => ', pair[1]);
+        }
+
         try {
-            const formData = new FormData();
-            formData.append('action', 'updatePhoto');
-            formData.append('updatePhoto', photo);
-            const response = await fetch('/src/Profile/Admin/adminRequestRoute.php', { method: 'POST', body: formData });
+            const response = await fetch('/src/Profile/Admin/adminRequestRoute.php', {
+                method: 'POST',
+                body: formData
+            });
+
             const responseText = await response.text();
             console.log("Réponse brute du serveur:", responseText);
 
             try {
                 const updateResponse = JSON.parse(responseText);
                 if (updateResponse.status === 'success') {
-                    console.dir(updateResponse);
+                    console.log("Mise à jour réussie :", updateResponse);
                 } else {
-                    console.error('Erreur:', updateResponse.message); 
+                    console.error("Erreur:", updateResponse.message);
                 }
-                userInfo();
             } catch (error) {
-                console.error('Erreur de parsing JSON:', error);
-                console.log('Contenu de la réponse:', responseText); 
+                console.error("Erreur de parsing JSON:", error);
+                console.log("Réponse brute:", responseText);
             }
+
         } catch (error) {
-            console.error('Erreur de requête:', error);
+            console.error("Erreur de requête:", error);
         }
+
     } else {
         console.error("Aucun fichier sélectionné");
     }
-
-   
-
 }
+
 
 
 export function updateUser() {

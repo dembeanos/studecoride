@@ -33,7 +33,7 @@ window.addEventListener('load', function () {
         };
 
         try {
-            const response = await fetch(`/src/Router/routeurMessage.php`, {
+            const response = await fetch(`/src/Router/messageRouter.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -41,8 +41,8 @@ window.addEventListener('load', function () {
                 body: JSON.stringify({ action: 'sendPublicMessage', data: data })
             });
 
-            const json = await response.json();
-
+            const json = await response.text();
+            console.log(json)
             if (json.type) {
                 handleResponse(json);
             }

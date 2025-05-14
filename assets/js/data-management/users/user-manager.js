@@ -1,15 +1,7 @@
 window.addEventListener("load", () => {
     const onglets = document.querySelectorAll(".onglets");
     const pages = document.querySelectorAll("section");
-    const functions = [
-        userInfo,
-        cars,
-        credit,
-        reservation,
-        setTrip,
-        tripManager,
-    ];
-
+    const functions = [userInfo, credit, reservation, cars, setTrip, tripManager];
 
     const hidePages = () => { pages.forEach((page) => page.style.display = "none"); };
 

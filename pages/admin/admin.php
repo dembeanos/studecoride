@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../../src/Authentification/auth.php';
+require_once __DIR__ . '/../../src/Authentification/auth.php';
 checkAuthAdmin();
 ?>
 
@@ -23,7 +23,7 @@ checkAuthAdmin();
         <?php include __DIR__ . '/../../includes/header.php';
         $page = isset($_GET['page']) ? $_GET['page'] : 'admin';
         ?>
-        <h1>Bienvenue dans votre Espace Administrateur</h1>
+        <h1>Espace Administrateur de <?php echo $_SESSION['firstName']?></h1>
     </header>
     </div>
 

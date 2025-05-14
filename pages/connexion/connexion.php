@@ -1,8 +1,7 @@
-<?php 
+<?php
+require_once __DIR__ . '/../../src/Authentification/auth.php';
 require_once __DIR__ . '/../../src/Database/Database.php';
 require_once __DIR__ . '/../../src/Authentification/Login.php';
-
-session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {

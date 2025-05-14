@@ -120,13 +120,16 @@ final class Login
 */
     private function redirectAdmin(int $loginId): void
     {
-        $query = "SELECT adminid AS adminId FROM admins WHERE idlogin = :loginId";
+        $query = "SELECT adminid, firstname FROM admins WHERE idlogin = :loginId";
         $statement = $this->pdo->prepare($query);
         $statement->execute(['loginId' => $loginId]);
-        $admin = $statement->fetchColumn();
+        $admin = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if ($admin !== false) {
-            Session::setAdminId((int)$admin);
+        if ($admin['firstname'] !== false) {
+                Session::setFirstName($admin['firstname']);
+            }
+        if ($admin['adminid'] !== false) {
+            Session::setAdminId((int)$admin['adminid']);
             header('Location: /pages/admin/admin.php');
             exit();
         } else {
@@ -136,13 +139,17 @@ final class Login
 
     private function redirectEmployee(int $loginId): void
     {
-        $query = "SELECT employeid AS employeId FROM employees WHERE idlogin = :loginId";
+        $query = "SELECT employeid, firstname FROM employees WHERE idlogin = :loginId";
         $statement = $this->pdo->prepare($query);
         $statement->execute(['loginId' => $loginId]);
-        $employee = $statement->fetchColumn();
+        $employee = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if ($employee !== false) {
-            Session::setEmployeId((int)$employee);
+
+        if ($employee['firstname'] !== false) {
+                Session::setFirstName($employee['firstname']);
+            }
+        if ($employee['employeid'] !== false) {
+            Session::setEmployeId((int)$employee['employeid']);
             header('Location: /pages/employe/employe.php');
             exit();
         } else {
@@ -150,24 +157,36 @@ final class Login
         }
     }
 
-    private function redirectUser(int $loginId): void
-    {
-        try {
+   private function redirectUser(int $loginId): void
+{
+    try {
+        $query = "SELECT userid , userrole, firstname FROM users WHERE idlogin = :loginId";
+        $statement = $this->pdo->prepare($query);
+        $statement->execute(['loginId' => $loginId]);
 
-            $query = "SELECT userid AS userId FROM users WHERE idlogin = :loginId";
-            $statement = $this->pdo->prepare($query);
-            $statement->execute(['loginId' => $loginId]);
+        
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-            $userId = $statement->fetchColumn();
-            if ($userId !== false) {
-                Session::setUserId((int)$userId);
+        if ($user !== false) {
+          
+            if ($user['userrole'] !== false) {
+                Session::setRole($user['userrole']);
+            }
+            if ($user['firstname'] !== false) {
+                Session::setFirstName($user['firstname']);
+            }
+
+            if ($user['userid'] !== false) {
+                Session::setUserId((int)$user['userid']);
                 header('Location: /index.php');
                 exit();
             } else {
                 $this->saveLog("Echec de la connexion erreur Login user non trouvé(redirectUser).", 'CRITICAL');
             }
-        } catch (Exception $e) {
-            $this->saveLog("Erreur Login : " . $e->getMessage(), 'CRITICAL');
         }
+    } catch (Exception $e) {
+        $this->saveLog("Erreur Login : " . $e->getMessage(), 'CRITICAL');
     }
+}
+
 }

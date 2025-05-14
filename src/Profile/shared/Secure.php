@@ -82,7 +82,6 @@ final class Secure
             $this->getBackPassword();
 
             //Verification des données avant traitement
-            if ($error = $this->setNewPassword($this->newPassword)) return $error;
             if ($error = $this->comparePassword()) return $error;
 
             list($table, $column, $id) = $this->getTargetTableAndColumn();
@@ -99,6 +98,7 @@ final class Secure
 
             $result = $statement->fetch(PDO::FETCH_ASSOC);
 
+     
             // Vérification du mot de passe actuel
             if (!$result || !password_verify($this->getBackPassword(), $result['password'])) {
                 return $this->sendUserError('Le mot de passe actuel n\'est pas correct','sendPassword');

@@ -9,8 +9,8 @@ require_once __DIR__ . '/../Traits/Exception.php';
 $db = new Database();
 $pdo = $db->getPdo();
 
-class Extraction extends Filtres
-{
+class Extraction extends Filtres {
+    
     use ExceptionTrait;
 
     private $pdo;
@@ -105,136 +105,149 @@ class Extraction extends Filtres
         }
     }
 
-    public function searchOffersByZone()
+  public function searchOffersByZone(): array
     {
-        try {
-            // Appel de la méthode précédente qui retourne un tableau de valeur
-            $geoms = $this->getGeom();
-            $geomDepart = $geoms['depart'];
-            $geomArrival = $geoms['arrival'];
+        $geoms = $this->getGeom();
+        $geomDepart = $geoms['depart'];
+        $geomArrival = $geoms['arrival'];
 
-            // Convertir les kilomètres en mètres
-            $zone = $this->getZone() * 1000;
+        // Conversion de la zone (km -> mètres) et calcul en degrés
+        $zoneInDegrees = ($this->getZone() * 1000) / 111320;
 
-            // Calcul de la zone en degrés 
-            $zoneInDegrees = $zone / 111320;
+        // Requête combinée : offres actives autour du départ ET arrivée
+        $sql = <<<SQL
+SELECT
+    o.offerid,
+    o.datedepart,
+    o.citydepart,
+    o.arrivalcity,
+    o.price,
+    o.placeavailable,
+    o.duration,
+    o.datearrival,
+    o.roaddepart,
+    o.arrivalroad,
+    o.hourdepart,
+    o.hourarrival,
+    o.status,
+    p.animal,
+    p.smoke,
+    p.other,
+    c.energy,
+    c.modele,
+    c.marque,
+    c.color,
+    u.note,
+    u.photo,
+    l.username
+FROM offers o
+JOIN preferences p ON o.iduser = p.iduser
+JOIN cars c        ON o.idauto  = c.carid
+JOIN users u       ON o.iduser  = u.userId
+JOIN logins l      ON u.idlogin = l.loginid
+WHERE
+    o.status = :status
+    AND ST_DWithin(o.geomdepart, :geomDepart, :zoneInDegrees)
+    AND ST_DWithin(o.geomarrival, :geomArrival, :zoneInDegrees);
+SQL;
 
-            // Première requête pour récupérer les offres correspondant à la zone autour du départ
-            $query = "
-            SELECT o.offerid, o.datedepart, o.citydepart, o.arrivalcity, o.price, o.placeavailable, o.duration, o.datearrival,
-                   o.roaddepart, o.arrivalroad, o.hourdepart, o.hourarrival, 
-                   p.animal, p.smoke, p.other, 
-                   c.energy,c.modele,c.marque, c.color, 
-                   u.note,u.photo,
-                   l.username
-            FROM offers o
-            INNER JOIN preferences p ON o.iduser = p.iduser
-            INNER JOIN cars c ON o.idauto = c.carid
-            INNER JOIN users u ON o.iduser = u.userId
-            INNER JOIN logins l ON l.loginid = u.idlogin
-            WHERE 
-                ST_DWithin(o.geomdepart, :geomDepart, :zoneInDegrees) AND
-                o.status = 'active'
-            ";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(':geomDepart',    $geomDepart);
+        $stmt->bindValue(':geomArrival',   $geomArrival);
+        $stmt->bindValue(':zoneInDegrees', $zoneInDegrees);
+        $stmt->bindValue(':status', 'active');
+        $stmt->execute();
 
-            $statement = $this->pdo->prepare($query);
-            $statement->bindValue(':geomDepart', $geomDepart);
-            $statement->bindValue(':zoneInDegrees', $zoneInDegrees);
-            $statement->execute();
+        $offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-            $offers = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-            if (empty($offers)) {
-                return $this->sendToDev('Aucune offre disponible dans la zone de départ');
-            }
-
-            // Étape 2 : Filtrage pour exclure les offres dont la géométrie d'arrivée n'est pas dans la zone
-            $validOffers = [];
-            foreach ($offers as $offer) {
-                $queryArrival = "
-                SELECT 1
-                FROM offers o
-                WHERE ST_DWithin(o.geomarrival, :geomArrival, :zoneInDegrees)
-                AND o.offerid = :offerid
-                ";
-
-                $arrivalStatement = $this->pdo->prepare($queryArrival);
-                $arrivalStatement->bindValue(':geomArrival', $geomArrival);
-                $arrivalStatement->bindValue(':zoneInDegrees', $zoneInDegrees);
-                $arrivalStatement->bindValue(':offerid', $offer['offerid']);
-                $arrivalStatement->execute();
-
-                $arrivalValid = $arrivalStatement->fetch(PDO::FETCH_ASSOC);
-
-                if ($arrivalValid) {
-                    $validOffers[] = $offer; // Ajouter l'offre à la liste des offres valides
-                }
-            }
-
-            if (empty($validOffers)) {
-                return $this->sendToDev('Aucune offre valide ne correspond à vos critères');
-            }
-
-            return $validOffers;
-        } catch (PDOException $e) {
-            return $this->saveLog("Erreur lors de la recherche des offres : " . $e->getMessage(), 'FATAL');
+        if (empty($offers)) {
+            throw new RuntimeException('Aucune offre active trouvée dans la zone de départ et d’arrivée.');
         }
+
+        return $offers;
     }
 
-    //Affinage des offres selon les paramètres saisis par l'utilisateur
+    /**
+     * Filtre les offres selon les préférences de l'utilisateur
+     *
+     * @return array|string Tableau des offres filtrées ou message d'erreur
+     */
     public function filterOffers()
     {
         try {
             $offers = $this->searchOffersByZone();
-        } catch (Exception $e) {
-            return $offers;
-        }
 
-        $filteredOffers = [];
-        try {
-            foreach ($offers as $offer) {
-                $isValid = true;
+            // Vérification supplémentaire : ne traiter que les offres actives
+            $offers = array_filter(
+                $offers,
+                fn(array $offer) => isset($offer['status']) && $offer['status'] === 'active'
+            );
 
-                if (strtotime($offer['datedepart']) < strtotime($this->getDepartDate())) {
-                    $isValid = false;
-                }
+            $filteredOffers = array_filter(
+                $offers,
+                fn(array $offer): bool => $this->isOfferValid($offer)
+            );
 
-                if ($offer['placeavailable'] < $this->getPlaceAvailable()) {
-                    $isValid = false;
-                }
-
-                if ($offer['animal'] != $this->getAnimal()) {
-                    $isValid = false;
-                }
-
-                if ($offer['smoke'] != $this->getSmoke()) {
-                    $isValid = false;
-                }
-
-                if ($offer['energy'] != 'Electric' && $this->getEco() === true) {
-                    $isValid = false;
-                }
-
-                if ($offer['duration'] > $this->getDuration()) {
-                    $isValid = false;
-                }
-
-                if ($offer['note'] !== null && $offer['note'] < $this->getNote()) {
-                    $isValid = false;
-                }
-
-                if ($isValid) {
-                    $filteredOffers[] = $offer;
-                }
+            if (empty($filteredOffers)) {
+                return $this->sendPopup(
+                    'Aucune offre ne correspond à vos critères de filtrage. Essayez d’assouplir vos préférences ou de changer la date.'
+                );
             }
 
-            if (count($filteredOffers) == 0) {
-                return $this->sendPopup('Aucune offre ne correspond à vos critères de filtrage. Peut-être qu’une autre date pourrait vous convenir ?');
-            }
+            return array_values($filteredOffers);
 
-            return $filteredOffers;
-        } catch (Exception $e) {
-            $this->saveLog("Erreur lors du filtrage des offres : " . $e->getMessage(), 'FATAL');
+        } catch (Throwable $e) {
+            return $this->sendPopup(
+                'Aucune offre ne correspond à vos critères de filtrage. Essayez d’assouplir vos préférences ou de changer la date.'
+            );
         }
+    }
+
+    /**
+     * Validation d'une offre selon les critères utilisateur
+     */
+     private function isOfferValid(array $offer): bool
+    {
+        // Ne pas traiter les offres inactives
+        if (isset($offer['status']) && $offer['status'] !== 'active') {
+            return false;
+        }
+
+        // Vérification de la date de départ
+        if (strtotime($offer['datedepart']) < strtotime($this->getDepartDate())) {
+            return false;
+        }
+
+        // Vérification du nombre de places disponibles
+        if ($offer['placeavailable'] < $this->getPlaceAvailable()) {
+            return false;
+        }
+
+        // Vérification de la présence d'animal
+        if ($offer['animal'] !== $this->getAnimal()) {
+            return false;
+        }
+
+        // Vérification de la préférence tabac
+        if ($offer['smoke'] !== $this->getSmoke()) {
+            return false;
+        }
+
+        // Critère écologique : énergie électrique
+        if ($this->getEco() && $offer['energy'] !== 'Electric') {
+            return false;
+        }
+
+        // Durée du trajet maximale
+        if ($offer['duration'] > $this->getDuration()) {
+            return false;
+        }
+
+        // Note minimale
+        if ($offer['note'] !== null && $offer['note'] < $this->getNote()) {
+            return false;
+        }
+
+        return true;
     }
 }

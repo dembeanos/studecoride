@@ -1,6 +1,5 @@
-<?php
-// Ce fichier suit la même logique que userRoute, voir commentaires dans userRoute.php
-
+<?php // Ce fichier suit la même logique que userRoute, voir commentaires dans userRoute.php
+require_once __DIR__ . '/../Authentification/auth.php';
 require_once __DIR__ .'/../Profile/Admin/Admin.php';
 require_once __DIR__ .'/../Profile/Admin/UserManager.php';
 require_once __DIR__ .'/../Profile/Admin/EmployeManager.php';
@@ -11,9 +10,11 @@ require_once __DIR__ .'/../Profile/Admin/Profit.php';
 require_once __DIR__ .'/../Profile/Admin/Log.php';
 require_once __DIR__ .'/../Profile/shared/Messages.php';
 
-session_start();
 
 $adminId = $_SESSION['adminId'];
+if (empty($adminId)){
+    exit;
+}
 
 $data = null;
 $response = null;

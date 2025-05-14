@@ -1,32 +1,41 @@
 <?php
-// ce fichier a été rédigé de manière à contrôler l'accès à certaines pages
-//j'ai remis la logique de check de connexion dans des fonctions de manière 
-//à éviter la répétition
-
-function checkAuthUser() {
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
+}
+
+// Fonctions verification de connexion
+function isUserConnected(): bool {
     
-    if (!isset($_SESSION['userId'])) {
+    return isset($_SESSION['userId']) && isset($_SESSION['role']);
+}
+
+function isAdminConnected(): bool {
+    return isset($_SESSION['adminId']);
+}
+
+function isEmployeConnected(): bool {
+    return isset($_SESSION['employeId']);
+}
+
+// Fonctions de protection pour restreindre une page
+function checkAuthUser(): void {
+    if (!isUserConnected()) {
         header("Location: ../connexion/connexion.php");
         exit;
     }
 }
 
-function checkAuthAdmin() {
-    session_start();
-    
-    if (!isset($_SESSION['adminId'])) {
-        header("Location: ../connexion/connexion.php");
-        exit;
-    }
-}
-function checkAuthEmploye() {
-    session_start();
-    
-    if (!isset($_SESSION['employeId'])) {
+function checkAuthAdmin(): void {
+    if (!isAdminConnected()) {
         header("Location: ../connexion/connexion.php");
         exit;
     }
 }
 
+function checkAuthEmploye(): void {
+    if (!isEmployeConnected()) {
+        header("Location: ../connexion/connexion.php");
+        exit;
+    }
+}
 ?>

@@ -42,6 +42,7 @@ final class Session {
     public static function setAdminId(int $adminId): void { self::set('adminId', $adminId); }
     public static function setEmployeId(int $employeId): void { self::set('employeId', $employeId); }
     public static function setUserId(int $userId): void { self::set('userId', $userId); }
+    public static function setFirstName($userId): void { self::set('firstName', $userId); }
 
    //Recupération des valeurs dans Session
     public static function getLoginId(): ?int { return self::get('loginId'); }
@@ -49,6 +50,7 @@ final class Session {
     public static function getAdminId(): ?int { return self::get('adminId'); }
     public static function getEmployeId(): ?int { return self::get('employeId'); }
     public static function getUserId(): ?int { return self::get('userId'); }
+    public static function getFirstName($userId): void { self::get('firstName', $userId); }
    
    
     public static function destroy(): void

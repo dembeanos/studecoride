@@ -1,3 +1,6 @@
+<?php
+require_once __DIR__ . '/../../src/Authentification/auth.php';
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>

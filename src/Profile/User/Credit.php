@@ -45,10 +45,13 @@ final class Credit {
 
             $creditInfo = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-            if ($creditInfo) {
-                foreach ($creditInfo as &$credit) {
-                    $credit = array_map('trim', $credit);
-                }
+             if ($creditInfo) {
+            foreach ($creditInfo as &$credit) {
+                //on vérifie si la valeur est null avant d'appliquer trim
+                $credit = array_map(function($value) {
+                    return trim($value ?? ''); // Si la valeur est null, on la remplace par une chaîne vide
+                }, $credit);
+            }
 
                 return [
                     'status' => 'success',
