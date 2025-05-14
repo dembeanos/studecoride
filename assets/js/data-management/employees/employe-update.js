@@ -64,27 +64,28 @@ export async function updatePassword() {
 
 
 export async function updatePhoto() {
-    let { inputPhoto } = initEmployeVar();
+    let {inputPhoto} = initEmployeVar();
     let photo = inputPhoto.files[0];
     if (photo) {
         try {
             const formData = new FormData();
             formData.append('action', 'updatePhoto');
             formData.append('updatePhoto', photo);
-            const response = await fetch('/src/Profile/Employee/EmployeRequestRoute.php', { method: 'POST', body: formData });
+            const response = await fetch('/src/Router/employeRoute.php', { method: 'POST', body: formData });
             const responseText = await response.text();
             console.log("Réponse brute du serveur:", responseText); 
+
             try {
                 const updateResponse = JSON.parse(responseText); 
                 if (updateResponse.status === 'success') {
-                    console.dir(updateResponse);
+                    console.dir(updateResponse); 
                 } else {
                     console.error('Erreur:', updateResponse.message); 
                 }
                 userInfo();
             } catch (error) {
                 console.error('Erreur de parsing JSON:', error);
-                console.log('Contenu de la réponse:', responseText);
+                console.log('Contenu de la réponse:', responseText); 
             }
         } catch (error) {
             console.error('Erreur de requête:', error);

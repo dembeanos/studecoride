@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 require_once __DIR__ .'/../../Database/Database.php';
@@ -27,45 +26,58 @@ final class Photo {
     }
 
     //Setters
-    private function setPhoto($photo) {
-        //Verifictaion de l'existance de la photo
-        if (isset($photo) && $photo['error'] === UPLOAD_ERR_OK) {
-            //Definition d'une variable des format autorisé facilement étendable ici
-            $allowedExtension = ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'];
-            //Comparaison du type de l'image avec le tableau d'extensions autorisées
-            if (!in_array($photo['type'], $allowedExtension)) {
-                $this->sendUserError('Le fichier doit être une image au format Jpeg, Png, Gif ou Svg.', 'updatePhoto');
-            }
-            //Détermination du poid de l'image par calcul de sa taille.
-            $maxSize = 5 * 1024 * 1024;
-            //Comparaison du poid de l'image recu avec le poid maximum autorisé
-            if ($photo['size'] > $maxSize) {
-                $this->sendUserError('Le fichier est trop volumineux. La taille maximale autorisée est de 5 Mo', 'updatePhoto');
-            }
-            $imageSize = getimagesize($photo['tmp_name']);
-            if ($imageSize === false) {
-                $this->sendUserError('Le fichier n\'est pas une image valide.', 'updatePhoto');
-            }
-            //Verification du nom de fichier et remplacement des caractères non autorisés
-            $fileName = $photo['name'];
-            $fileName = preg_replace('/[^a-zA-Z0-9._-]/', '', $fileName);
+private function setPhoto($photo) {
+    // Vérification de l'existence de la photo
+    if (isset($photo) && $photo['error'] === UPLOAD_ERR_OK) {
+        // Définition des formats autorisés
+        $allowedExtension = ['image/jpeg', 'image/png', 'image/gif', 'image/svg+xml'];
+        
+        // Vérification du type d'image
+        if (!in_array($photo['type'], $allowedExtension)) {
+            $this->sendUserError('Le fichier doit être une image au format Jpeg, Png, Gif ou Svg.', 'updatePhoto');
+        }
+        
+        // Vérification du poids de l'image
+        $maxSize = 5 * 1024 * 1024;
+        if ($photo['size'] > $maxSize) {
+            $this->sendUserError('Le fichier est trop volumineux. La taille maximale autorisée est de 5 Mo', 'updatePhoto');
+        }
+        
+        // Vérification du fichier image
+        $imageSize = getimagesize($photo['tmp_name']);
+        if ($imageSize === false) {
+            $this->sendUserError('Le fichier n\'est pas une image valide.', 'updatePhoto');
+        }
+        
+        // Nettoyage du nom du fichier
+        $fileName = preg_replace('/[^a-zA-Z0-9._-]/', '', $photo['name']);
 
-            //Affectation du fichier Node.js pour chargement de clamav
-            $scanFilePath = __DIR__ . '../../../node_modules/scanFiles.js';
+        // Définition du chemin pour le scan antivirus
+        $scanFilePath = __DIR__ . '../../../node_modules/scanFiles.js';
 
-            //Lancement du scan antivirus de l'image recu
-            $clamavCommand = 'node ' . escapeshellarg($scanFilePath) . ' ' . escapeshellarg($photo['tmp_name']);
-            $clamavScan = shell_exec($clamavCommand);
+        // Lancement du scan antivirus
+        $clamavCommand = 'node ' . escapeshellarg($scanFilePath) . ' ' . escapeshellarg($photo['tmp_name']);
+        $clamavScan = shell_exec($clamavCommand);
 
-            //Verification du résultat si virus trouvé information utilisateurs fichier rejeté
-            if (strpos($clamavScan, 'FOUND') !== false) {
-                return $this->sendPopup('Le fichier contient un virus et ne peut pas être enregistré.');
-            }
+        // Vérification si le scan a trouvé un virus
+        if ($clamavScan === null) {
+            // Si shell_exec échoue, renvoie une erreur
+            return $this->sendPopup('Erreur lors du scan antivirus.');
+        }
 
-            //Si tout c'est bien passé affectation de la photo à la variable definitive
-            $this->photo = $fileName = file_get_contents($photo['tmp_name']);
+        if (strpos($clamavScan, 'FOUND') !== false) {
+            return $this->sendPopup('Le fichier contient un virus et ne peut pas être enregistré.');
+        }
+
+        // Si tout est valide, affectation de la photo
+        if (file_exists($photo['tmp_name'])) {
+            $this->photo = file_get_contents($photo['tmp_name']);
+        } else {
+            return $this->sendUserError('Le fichier photo est invalide.', 'updatePhoto');
         }
     }
+}
+
 
     //Getters
 
@@ -115,7 +127,6 @@ final class Photo {
     public function updatePhoto($photo)
     {
         try {
-
             //Appel du setter pour verification
             if ($error = $this->setPhoto($photo)) return $error;
 
@@ -124,7 +135,7 @@ final class Photo {
             $query = "UPDATE $table SET photo = :photo WHERE $column = :id";
             $statement = $this->pdo->prepare($query);
             $statement->bindValue(':id', $id, PDO::PARAM_INT);
-            $statement->bindValue(':photo', $this->getPhoto(), PDO::PARAM_LOB);
+            $statement->bindValue(':photo', $this->photo, PDO::PARAM_LOB);
             $statement->execute();
 
             return $this->sendUserSuccess('Votre photo a été mise à jour avec succès.', 'updatePhoto');

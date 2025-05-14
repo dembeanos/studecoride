@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "chart.js": "^4.4.9",
-    "clamav.js": "^0.12.0"
+    "clamav.js": "^0.12.0",
+    "clamscan": "^2.4.0"
   },
   "devDependencies": {
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.18.6"
