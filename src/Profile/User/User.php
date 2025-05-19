@@ -106,44 +106,51 @@ final class User {
     // -------------------------------------------- Getters -------------------------------------------
 
     private function getUserId() { return $this->userId; }
-    private function getFirstName() { return htmlspecialchars_decode($this->firstName); }
-    private function getLastName() { return htmlspecialchars_decode($this->lastName); }
-    private function getPhone() { return htmlspecialchars($this->phone); }
-    private function getEmail() { return htmlspecialchars_decode($this->email); }
-    private function getRoad() { return htmlspecialchars_decode($this->road); }
-    private function getRoadComplement() { return htmlspecialchars_decode($this->roadComplement); }
-    private function getZipCode() { return htmlspecialchars_decode($this->zipCode); }
-    private function getCity() { return htmlspecialchars_decode($this->city); }
+    private function getFirstName() { return $this->firstName; }
+    private function getLastName() { return $this->lastName; }
+    private function getPhone() { return $this->phone; }
+    private function getEmail() { return $this->email; }
+    private function getRoad() { return $this->road; }
+    private function getRoadComplement() { return $this->roadComplement; }
+    private function getZipCode() { return $this->zipCode; }
+    private function getCity() { return $this->city; }
 
     // -------------------------------------------- Fonction Principales -------------------------------------------
+public function getUserInfo() {
+    $query = "
+        SELECT u.firstname, u.lastname, u.phone, u.road, u.roadcomplement,
+               u.zipcode, u.city, l.email, u.userrole 
+        FROM users u
+        JOIN logins l ON u.idlogin = l.loginid
+        WHERE u.userid = :userId
+    ";
+    $statement = $this->pdo->prepare($query);
+    $statement->bindValue(':userId', $this->getUserId(), PDO::PARAM_INT);
 
-    public function getUserInfo() {
+    try {
+        $statement->execute();
+        $userInfo = $statement->fetch(PDO::FETCH_ASSOC);
 
-        $query = "SELECT u.firstname, u.lastname, u.phone, u.road, u.roadcomplement, u.zipcode, u.city, l.email, u.userrole 
-                  FROM users u
-                  JOIN logins l ON u.idlogin = l.loginid
-                  WHERE u.userid = :userId";
-        
-        $statement = $this->pdo->prepare($query);
-        $statement->bindValue(':userId', $this->getUserId(), PDO::PARAM_INT);
-        
-        try {
-            $statement->execute();
-            $userInfo = $statement->fetch(PDO::FETCH_ASSOC);
-            
-            if ($userInfo) {
-                $userInfo = array_map('trim', $userInfo);
-                return [
-                    'status' => 'success',
-                    'data' => $userInfo
-                ];
-            }
+        if ($userInfo) {
+            // trim pour chaque valeur
+            $userInfo = array_map('trim', $userInfo);
+            // htmlspecialchars_decode() pour chaque valeur
+            $userInfo = array_map(function($val) {
+                return htmlspecialchars_decode($val, ENT_QUOTES);
+            }, $userInfo);
 
-            return $this->sendToDev('Utilisateur non trouvé');
-        } catch (PDOException $e) {
-            return $this->sendToDev('Erreur lors de la récupération des données utilisateur ');
+            return [
+                'status' => 'success',
+                'data' => $userInfo
+            ];
         }
+
+        return $this->sendToDev('Utilisateur non trouvé');
+    } catch (PDOException $e) {
+        return $this->sendToDev('Erreur lors de la récupération des données utilisateur');
     }
+}
+
    
 
     public function updateUserInfo($firstName, $lastName, $phone, $email, $road, $complement, $zipCode, $city) {

@@ -81,7 +81,6 @@ getResultButton.addEventListener('click', async (event) => {
     let results;
 
     try {
-        console.log(data);
         let request = await fetch(`/src/Router/searchRoute.php`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -93,10 +92,10 @@ getResultButton.addEventListener('click', async (event) => {
             return;
         }
 
-        results = await request.text();
-        console.log(results)
+        results = await request.json();
         if (results.type){
             handleResponse(results)
+            return
         }
         if (results.status === 'success') {
             currentResults = results.data;

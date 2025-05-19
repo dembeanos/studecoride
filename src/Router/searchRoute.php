@@ -4,15 +4,15 @@ if (file_exists(__DIR__ . '/../Search/Filtres.php')) {
 } else {
     die('Le fichier Filtres.php est introuvable');
 }
-require_once __DIR__ .'/../Search/Extraction.php';
+require_once __DIR__ . '/../Search/Extraction.php';
 
-//Json decode
+
 $inputData = json_decode(file_get_contents('php://input'), true);
 
-//Verification que la méthod et POST et que des données sont présentes
+// Vérification que des données sont présentes
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($inputData['data'])) {
 
-    //Assignation des valeurs à des variables 
+    // Assignation des valeurs à des variables
     $inseeDepart = $inputData['data']['inseeDepart'] ?? null;
     $inseeArrival = $inputData['data']['inseeArrival'] ?? null;
     $departDate = $inputData['data']['departDate'] ?? null;
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($inputData['data'])) {
     $zone = $inputData['data']['zone'] ?? null;
 
     try {
-        // 1ere etape : Envoi a Filtres
+        // Envoi à Filtres
         $filtre = new Filtres(
             $inseeDepart,
             $inseeArrival,
@@ -39,44 +39,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($inputData['data'])) {
             $zone
         );
 
-        // 2eme étape une fois réponse filtre appel d'Extraction
+        // appel d'Extraction avec filtre
         $extraction = new Extraction($filtre, $pdo);
         $offres = $extraction->filterOffers();
 
-        foreach ($offres as &$offre) { // Utilisation de & pour modifier les éléments de $offres en place (pas des copies)
+        // Vérifie si la réponse contient un type spécial pour ma fonction handleResponse
+        if (isset($offres['type'])) {
+            echo json_encode($offres);
+            exit; // Stoppe le script ici
+        }
+
+        // Sinon traitement normal des offres
+        foreach ($offres as &$offre) {
             if (!empty($offre['photo'])) {
-                // Si la donnée est déjà une ressource, récupère son contenu
                 if (is_resource($offre['photo'])) {
-                    $photoData = stream_get_contents($offre['photo']);  // Pour lire une ressource de type fichier
+                    $photoData = stream_get_contents($offre['photo']);
                 } else {
-                    // Si ce n'est ni une ressource ni une chaîne, gère l'erreur
                     $photoData = false;
                 }
-        
-                // Vérifier si la lecture a réussi
+
                 if ($photoData !== false) {
-                    // Encoder en base64
                     $offre['photo'] = 'data:image/jpeg;base64,' . base64_encode($photoData);
                 } else {
-                    // Si la lecture échoue, gérer l'erreur
-                    $offre['photo'] = null;  // Ou une valeur par défaut
+                    $offre['photo'] = null;
                 }
             }
         }
-        unset($offre); // unset $offre pour défaire la derniere valeur vers qui il pointait en fin de boucle
-        
+        unset($offre); //supression de la derniere référence enregistré dans la boucle
+
         echo json_encode([
             'status' => 'success',
             'data' => $offres
         ]);
-
     } catch (Exception $e) {
         echo json_encode([
             'type' => 'dev',
-            'message' => 'Router : Erreur lors de la recuperation de l\'offre'
+            'message' => 'Router : Erreur lors de la récupération de l\'offre'
         ]);
     }
-
 } else {
     echo json_encode([
         'type' => 'dev',

@@ -16,18 +16,13 @@ window.addEventListener("load", () => {
             if (typeof functions[index] === "function") {
                 functions[index]();
             }
-
-            localStorage.setItem('activePage', index);
         } else {
             console.error("La page avec l'index", index, "n'existe pas.");
         }
     };
 
-    const activePage = localStorage.getItem('activePage');
-    const initialPage = (activePage !== null && !isNaN(activePage) && activePage < pages.length) ? parseInt(activePage) : 0;
-
     hidePages();
-    showPage(initialPage);
+    showPage(0);
 
     onglets.forEach((onglet, index) => {
         onglet.addEventListener("click", (event) => {
@@ -82,9 +77,12 @@ async function fetchRequest(action) {
             },
             body: JSON.stringify({ action: action })
         });
-        const responseText = await request.text();
-        console.log(responseText)
-        const responseData = JSON.parse(responseText);
+        const response = await request.text();
+        console.log(response)
+        if (response.type) {
+            handleResponse(response)
+        }
+        const responseData = JSON.parse(response);
         return responseData;
     } catch (error) {
 

@@ -49,8 +49,6 @@ async function opinion(reservationId) {
             });
 
             const json = await response.json();
-            console.log(json);
-
             if (json.type) {
                 handleResponse(json);
             }

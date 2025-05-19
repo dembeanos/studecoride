@@ -15,13 +15,10 @@ window.addEventListener("load", () => {
             functions[index]();
         }
 
-        localStorage.setItem('activePage', index);
     };
-    const activePage = localStorage.getItem('activePage');
-    const initialPage = activePage ? parseInt(activePage) : 0
 
     hidePages()
-    showPage(initialPage)
+    showPage(0)
 
     onglets.forEach((onglet, index) => {
         onglet.addEventListener("click", (event) => {
@@ -67,14 +64,14 @@ export function initUserVar() {
         other: document.getElementById('otherPreference')
     }
     let creditVar = {
-        movementsContainer: document.querySelector('.movementsCredits'),
+        movementsContainer: document.getElementById('creditsContainer'),
         movementLine: document.querySelector('.movementRow'),
         totalCreditElem: document.getElementById('totalAmountCredits'),
 
     }
     let reservationVar = {
         reservationContainer: document.querySelector('.reservation-container'),
-        templateLine: document.querySelector('.reservation-container .reservation-line'),
+        templateLine: document.querySelector('.reservation-line'),
     }
     let inputTrip = {
         cityDepart: document.getElementById('cityDepart'),
@@ -155,7 +152,8 @@ async function fetchRequest(action) {
             body: JSON.stringify({ action: action })
         });
         const responseText = await request.text();
-        console.log(responseText);
+
+
         const responseData = JSON.parse(responseText);
         return responseData;
     } catch (error) {
@@ -437,7 +435,7 @@ export async function reservation() {
 
             infos.forEach(info => {
                 let newReservationLine = reservationVar.templateLine.cloneNode(true);
-                newReservationLine.style.display = "block";
+                newReservationLine.style.display = "table-row";
 
                 newReservationLine.querySelector(".reservation-date").textContent = info.dateReservation;
                 newReservationLine.querySelector(".reservation-ref").textContent = info.reservationId;
@@ -483,7 +481,7 @@ export async function reservation() {
                 reservationVar.reservationContainer.appendChild(newReservationLine);
             });
         } else {
-            reservationVar.reservationContainer.innerHTML = "<p>Aucune réservation pour le moment.</p>";
+            reservationVar.reservationContainer.innerHTML = "<tr><td colspan='9'>Aucune réservation pour le moment.</td></tr>";
         }
     } catch (error) {
         console.error('Erreur lors de la récupération des réservations:', error);
@@ -492,20 +490,21 @@ export async function reservation() {
 
 export async function setTrip() {
     try {
+        
         let { tripVar } = initUserVar();
-        const [savedCar, savedPref, tripInfo] = await Promise.all([
+        const [savedCar, savedPref] = await Promise.all([
             fetchRequest('getCar'),
             fetchRequest('getPreference'),
-            fetchRequest('getTrip')
         ]);
 
         carLine.innerHTML = "";
         let cars = Array.isArray(savedCar.data) ? savedCar.data : [];
-        tripVar.prefId = savedPref.preferenceid;
-        tripVar.tripButton.dataset.prefId = tripVar.prefId;
-
+        //affectation de preferenceId au dataset bouton
+        tripVar.tripButton.dataset.prefId = savedPref.preferenceid
+        //affectation du select de voiture diponible à une sous variable
         let autoTripSelect = tripVar.autoTripSelect;
 
+        //Incrémentantion des voiture de l'utilisateur a la selection de voiture connue
         if (autoTripSelect) {
             autoTripSelect.innerHTML = "";
             cars.forEach(car => {
@@ -514,18 +513,18 @@ export async function setTrip() {
                 option.textContent = `${car.marque} ${car.modele} ${car.color} ${car.immatriculation}`;
                 autoTripSelect.appendChild(option);
             });
-
+            //redirection vers ajout de voiture si l'utilisateur veut creer une autre voiture
             let addCarOption = document.createElement('option');
             addCarOption.value = "addCar";
             addCarOption.textContent = "+ Ajouter un véhicule";
             autoTripSelect.appendChild(addCarOption);
-
+            //ecoute de la selection d'une volonté d'ajout d'un vehicule et redirection
             autoTripSelect.addEventListener('click', function () {
                 if (autoTripSelect.value === "addCar") {
                     document.getElementById('pageCar').style.display = 'block';
                     document.getElementById('pageTrajet').style.display = 'none';
                     getCar();
-                } else {
+                } else {// sinon recuperation de de l'id du vehicule et enregistrement dans le dataset du bouton
                     let selectedCar = cars.find(car => car.carid == autoTripSelect.value);
                     if (selectedCar) {
                         tripVar.carId = selectedCar.carid;
@@ -539,7 +538,7 @@ export async function setTrip() {
                         defaultOption.value = "0";
                         defaultOption.textContent = "Sélectionnez...";
                         tripPlacesSelect.appendChild(defaultOption);
-
+                        // j'enleve la place conducteur du nombre de place du vehicule conducteur
                         let availablePlaces = tripVar.carPlaces - 1;
 
                         for (let i = 1; i <= availablePlaces; i++) {
@@ -551,7 +550,9 @@ export async function setTrip() {
                     }
                 }
             });
+            
         }
+        setupButton({ addTrip: tripVar.tripButton });
     } catch (err) {
         console.error("Erreur dans setTrip :", err);
     }
@@ -560,7 +561,7 @@ export async function setTrip() {
 
 async function tripManager() {
     try {
-        let { tripVar } = initUserVar();
+        
         let tripInfo = await fetchRequest('getTrip');
         const tripLineTemplate = document.querySelector('.tripLine');
 
@@ -668,7 +669,7 @@ async function tripManager() {
             parentElement.appendChild(noTripMessage);
         }
 
-        setupButton({ addTrip: tripVar.tripButton });
+        
     } catch (error) {
         console.error('Erreur lors de la récupération des trajets ou des véhicules :', error);
     }

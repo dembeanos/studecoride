@@ -41,8 +41,8 @@ window.addEventListener('load', function () {
                 body: JSON.stringify({ action: 'sendPublicMessage', data: data })
             });
 
-            const json = await response.text();
-            console.log(json)
+            const json = await response.json();
+            
             if (json.type) {
                 handleResponse(json);
             }

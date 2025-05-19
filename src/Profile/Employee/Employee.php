@@ -109,43 +109,58 @@ final class Employee {
     
         private function getPdo() { return $this->pdo; }
         private function getEmployeId() { return $this->employeId; }
-        private function getFirstName() { return htmlspecialchars_decode($this->firstName); }
-        private function getLastName() { return htmlspecialchars_decode($this->lastName); }
-        private function getPhone() { return htmlspecialchars($this->phone); }
-        private function getEmail() { return htmlspecialchars_decode($this->email); }
-        private function getRoad() { return htmlspecialchars_decode($this->road); }
-        private function getRoadComplement() { return htmlspecialchars_decode($this->roadComplement); }
-        private function getZipCode() { return htmlspecialchars_decode($this->zipCode); }
-        private function getCity() { return htmlspecialchars_decode($this->city); }
+        private function getFirstName() { return $this->firstName; }
+        private function getLastName() { return $this->lastName; }
+        private function getPhone() { return $this->phone; }
+        private function getEmail() { return $this->email; }
+        private function getRoad() { return $this->road; }
+        private function getRoadComplement() { return $this->roadComplement; }
+        private function getZipCode() { return $this->zipCode; }
+        private function getCity() { return $this->city; }
     
      
         // -------------------------------------------- Fonction Principales -------------------------------------------
     
-        public function getEmployeeInfo() {
-            $query = "SELECT e.firstname, e.lastname, e.phone, e.road, e.roadcomplement, e.zipcode, e.city, l.email
-                      FROM employees e
-                      JOIN logins l ON e.idlogin = l.loginid
-                      WHERE e.employeid = :employeId";
-            
-            $statement = $this->pdo->prepare($query);
-            $statement->bindValue(':employeId', $this->getEmployeId(), PDO::PARAM_INT);
-            
-            try {
-                $statement->execute();
-                $employeInfo = $statement->fetch(PDO::FETCH_ASSOC);
-                
-                if ($employeInfo) {
-                    $employeInfo = array_map('trim', $employeInfo);// array_map pour créer un tableau propre avec des valeurs nettoyées (trim)
-                    return [
-                        'status' => 'success',
-                        'data' => $employeInfo
-                    ];
-                }
-                return $this->sendToDev('Utilisateur non trouvé');
-            } catch (PDOException $e) {
-                return $this->saveLog('Erreur lors de la récupération des données employé. Pour l\'employé: '.$this->getEmployeId().$e->getMessage(),'CRITICAL');
-            }
+public function getEmployeeInfo() {
+    $query = "
+        SELECT e.firstname,
+               e.lastname,
+               e.phone,
+               e.road,
+               e.roadcomplement,
+               e.zipcode,
+               e.city,
+               l.email
+        FROM employees e
+        JOIN logins l ON e.idlogin = l.loginid
+        WHERE e.employeid = :employeId
+    ";
+
+    $statement = $this->pdo->prepare($query);
+    $statement->bindValue(':employeId', $this->getEmployeId(), PDO::PARAM_INT);
+
+    try {
+        $statement->execute();
+        $employeInfo = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($employeInfo) {
+            $employeInfo = array_map('trim', $employeInfo);
+            $employeInfo = array_map(function($val) {
+                return htmlspecialchars_decode($val, ENT_QUOTES);
+            }, $employeInfo);
+
+            return [
+                'status' => 'success',
+                'data' => $employeInfo
+            ];
         }
+
+        return $this->sendToDev('Utilisateur non trouvé');
+    } catch (PDOException $e) {
+        return $this->saveLog('Erreur lors de la récupération des données employeId:'. $this->getEmployeId() .'Message:' .$e->getMessage(),'CRITICAL');
+    }
+}
+
        
     
         public function updateEmployeInfo($firstName, $lastName, $phone, $email, $road, $complement, $zipCode, $city) {

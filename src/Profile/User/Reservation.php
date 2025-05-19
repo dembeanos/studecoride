@@ -79,11 +79,11 @@ final class Reservation
     public function getPrice(){ return $this->price;}
     public function getIdOffer(){ return $this->idOffer;}
     public function getReservedPlaces(){ return $this->reservedPlaces;}
-    public function getReservationId(){ return $this->reservationId;}    
-    public function getDateReservation(){ return $this->dateReservation;}    
-    public function getHourDepart(){ return $this->hourDepart; }
+    public function getReservationId(){ return $this->reservationId;}
+    public function getDateReservation(){ return $this->dateReservation;}
+    public function getHourDepart(){ return $this->hourDepart;}
     public function getDateDepart(){ return $this->dateDepart;}
-    public function getDateArrival(){ return $this->dateArrival;}    
+    public function getDateArrival(){ return $this->dateArrival;}
     public function getHourArrival(){ return $this->hourArrival;}
 
 
@@ -140,14 +140,14 @@ final class Reservation
 
                 $result[] = [
                     'reservationId' => $reservation['reservationid'],
-                    'dateReservation' => $this->getDateReservation(),
+                    'dateReservation' => $reservation['creationdate'],
                     'status' => $reservation['status'],
                     'price' => $offer['price'],
-                    'dateDepart' => $this->getDateDepart(),
-                    'hourDepart' => $this->getHourDepart(),
+                    'dateDepart' => $offer['datedepart'],
+                    'hourDepart' => $offer['hourdepart'],
                     'cityDepart' => $offer['citydepart'],
-                    'dateArrival' => $this->getDateArrival(),
-                    'hourArrival' => $this->getHourArrival(),
+                    'dateArrival' => $offer['datearrival'],
+                    'hourArrival' => $offer['hourarrival'],
                     'arrivalCity' => $offer['arrivalcity'],
                     'driver' => $driver['username']
                 ];
@@ -162,16 +162,18 @@ final class Reservation
     }
 
 
-
     public function cancelReservation()
     {
-
         try {
-            // Annonce du démmarage d'une transaction complexe
             $this->pdo->beginTransaction();
 
-            // Recuperation de l'id de l'offre
-            $query = "SELECT idoffer FROM Reservations WHERE iduser = :userId AND reservationId = :reservationId";
+            // 1. Vérification de la réservation
+            $query = "
+            SELECT idoffer 
+            FROM Reservations 
+            WHERE iduser = :userId 
+              AND reservationid = :reservationId
+        ";
             $statement = $this->pdo->prepare($query);
             $statement->bindValue(':userId', (int)$this->userId, PDO::PARAM_INT);
             $statement->bindValue(':reservationId', (int)$this->reservationId, PDO::PARAM_INT);
@@ -179,91 +181,147 @@ final class Reservation
 
             $reservation = $statement->fetch(PDO::FETCH_ASSOC);
             if (!$reservation) {
-                $this->sendToDev("Réservation non trouvée.");
+                $this->pdo->rollBack();
+                return $this->sendToDev("Réservation non trouvée pour userId : {$this->userId}, reservationId : {$this->reservationId}");
             }
-
             $offerId = $reservation['idoffer'];
 
-            // Recuperation des informations de du trajet
-            $offerQuery = 'SELECT citydepart, datedepart, offerid, price, arrivalcity,iduser  FROM offers WHERE offerid = :offerId';
+            // 2. Récupération de l'offre
+            $offerQuery = "
+            SELECT citydepart, datedepart, offerid, price, arrivalcity, iduser 
+            FROM offers 
+            WHERE offerid = :offerId
+        ";
             $OfferStatement = $this->pdo->prepare($offerQuery);
-            $OfferStatement->bindValue(':offerId', $offerId, PDO::PARAM_INT);
-
-            if (!$OfferStatement->execute()) {
-                $this->sendToDev("Erreur lors de la récupération des détails de l'offre.");
-            }
+            $OfferStatement->bindValue(':offerId', (int)$offerId, PDO::PARAM_INT);
+            $OfferStatement->execute();
 
             $offer = $OfferStatement->fetch(PDO::FETCH_ASSOC);
             if (!$offer) {
-                $this->sendToDev("Aucun détail trouvé pour cette offre.");
+                $this->pdo->rollBack();
+                return $this->sendToDev("Aucun détail pour l'offre ID : $offerId");
             }
-            //Sauvegarde des éléments nécéssaire en cas d'envoi de message
-            $cityDepart = $offer['citydepart'];
-            $arrivalCity = $offer['arrivalcity'];
-            $driverUserId = $offer['iduser'];
 
-            // Verification que la date ne soit pas inférieur à la date du jour.
-            $currentDate = new DateTime();
+            // 3. Vérifier que la date est valide avant DateTime
+            if (empty($offer['datedepart']) || !strtotime($offer['datedepart'])) {
+                $this->pdo->rollBack();
+                return $this->sendToDev("Date de départ invalide sur l'offre ID : $offerId");
+            }
             $departureDate = new DateTime($offer['datedepart']);
+            $currentDate   = new DateTime();
 
             if ($departureDate < $currentDate) {
-                $this->sendToDev("Annulation impossible : la date de départ est déjà passée.");
+                $this->pdo->rollBack();
+                return $this->sendToDev("Annulation impossible : la date de départ est déjà passée ({$offer['datedepart']}).");
             }
 
-            //Lancement de la procedure d'annulation
-            $updateQuery = "UPDATE Reservations SET status = 'canceled' WHERE iduser = :userId AND reservationId = :reservationId";
+            // 4. Passage en statut 'canceled'
+            $updateQuery = "
+            UPDATE Reservations 
+            SET status = 'canceled' 
+            WHERE iduser = :userId 
+              AND reservationid = :reservationId
+        ";
             $updateStatement = $this->pdo->prepare($updateQuery);
             $updateStatement->bindValue(':userId', (int)$this->userId, PDO::PARAM_INT);
             $updateStatement->bindValue(':reservationId', (int)$this->reservationId, PDO::PARAM_INT);
+            if (!$updateStatement->execute()) {
+                $this->pdo->rollBack();
+                return $this->sendToDev("Erreur SQL lors de l'annulation (UPDATE Reservations).");
+            }
 
-            // si la procédure reussi envoi d'un message de confirmation ainsi qu'un message d'information au conducteur.
-            if ($updateStatement->execute()) {
-                $this->sendPopup('Annulation enregistré avec succès');
-                // Recuperation de l'id du conducteur pour envoi de message 
-                $queryDriver = "SELECT idlogin FROM users WHERE userid = :driverUserId";
-                $stmtDriver = $this->pdo->prepare($queryDriver);
-                $stmtDriver->bindValue(':driverUserId', (int)$driverUserId, PDO::PARAM_INT);
-                $stmtDriver->execute();
-                $driverInfo = $stmtDriver->fetch(PDO::FETCH_ASSOC);
+            $restoreQuery = $restoreQuery = "
+                                            UPDATE offers AS o
+                                            SET placeavailable = o.placeavailable + r.reservedplaces
+                                            FROM reservations AS r
+                                            WHERE o.offerid = r.idoffer
+                                              AND r.reservationid = :reservationId
+                                              AND o.offerid = :offerId
+                                            ";
+            $restorPlaceStatement = $this->pdo->prepare($restoreQuery);
+            $restorPlaceStatement->bindValue(':offerId', (int)$offerId, PDO::PARAM_INT);
+            $restorPlaceStatement->bindValue(':reservationId', (int)$this->reservationId, PDO::PARAM_INT);
+            $restorPlaceStatement->execute();
 
-                if (!$driverInfo) {
-                    $this->sendToDev("Information du conducteur non trouvée.");
-                }
+
+            // 5. Suppression des crédits liés
+            $deleteCreditsQuery = "
+            DELETE FROM credits 
+            WHERE idreservation = :reservationId
+        ";
+            $delStmt = $this->pdo->prepare($deleteCreditsQuery);
+            $delStmt->bindValue(':reservationId', (int)$this->reservationId, PDO::PARAM_INT);
+            if (!$delStmt->execute()) {
+                $errorInfo = $delStmt->errorInfo();
+                $this->pdo->rollBack();
+                $this->saveLog(
+                    "Échec suppression crédits pour reservation #{$this->reservationId} : " . $errorInfo[2],
+                    'ERROR'
+                );
+                return $this->sendUserError(
+                    "Erreur lors de l'annulation (suppression crédits).",
+                    'reservationAction'
+                );
+            }
+
+            // 6. Récupérer l'idlogin du conducteur
+            //    Attention : vérifier que ta table 'logins' a bien 'loginid' ou 'idlogin'
+            $queryDriver = "
+            SELECT l.loginid AS idlogin 
+            FROM users u
+            JOIN logins l ON u.idlogin = l.loginid
+            WHERE u.userid = :driverUserId
+        ";
+            $stmtDriver = $this->pdo->prepare($queryDriver);
+            $stmtDriver->bindValue(':driverUserId', (int)$offer['iduser'], PDO::PARAM_INT);
+            $stmtDriver->execute();
+
+            $driverInfo = $stmtDriver->fetch(PDO::FETCH_ASSOC);
+            if (!$driverInfo || empty($driverInfo['idlogin'])) {
+                $this->saveLog("Conducteur non trouvé pour userId : {$offer['iduser']}", 'ERROR');
+            } else {
                 $driverLogin = $driverInfo['idlogin'];
 
-                //récuperation du pseudo du réservateur pour spécification dans le message au conducteur
-                $queryUser = "SELECT username FROM logins l
-                    JOIN users u ON u.idlogin = l.loginid 
-                     WHERE u.userid = :userId";
+                // 7. Récupérer le pseudo du réservateur
+                $queryUser = "
+                SELECT l.username 
+                FROM logins l
+                JOIN users u ON u.idlogin = l.loginid
+                WHERE u.userid = :userId
+            ";
                 $stmtUser = $this->pdo->prepare($queryUser);
                 $stmtUser->bindValue(':userId', (int)$this->userId, PDO::PARAM_INT);
                 $stmtUser->execute();
+
                 $userInfo = $stmtUser->fetch(PDO::FETCH_ASSOC);
+                if (!$userInfo || empty($userInfo['username'])) {
+                    $this->saveLog("Réservateur non trouvé pour userId : {$this->userId}", 'ERROR');
+                } else {
+                    $username = $userInfo['username'];
 
-                if (!$userInfo) {
-                    $this->sendToDev("Information du réservateur non trouvée.");
+                    // 8. Envoi du message au conducteur
+                    $object  = 'Annulation de réservation';
+                    $message = "L'utilisateur $username a annulé sa réservation.\n"
+                        . "Trajet : {$offer['citydepart']} → {$offer['arrivalcity']}";
+
+                    $this->systemMessage($driverLogin, $object, $message);
                 }
-                $username = $userInfo['username'];
-
-                // Message type d'annulation
-                $object = 'Annulation de réservation';
-
-                $message = "L'utilisateur $username a annulé sa réservation.
-                Pour votre trajet au départ de $cityDepart à destination de $arrivalCity 
-                Le total des passagers a donc été mis à jour.";
-
-                // Envoi du Message
-                $this->systemMessage($driverLogin, $object, $message);
-            } else {
-                $this->sendToDev('Erreur lors de l\'annulation de la réservation');
             }
-            // Commit ou execution si tout c'est bien passée
+
+            // 9. Commit et retour OK
             $this->pdo->commit();
-        } catch (Exception $e) {
-            $this->pdo->rollBack();
-            return $this->saveLog('Erreur lors de l\'annulation de la réservation' . $e, 'FATAL');
+            $this->saveLog("Réservation #{$this->reservationId} annulée avec succès.", 'INFO');
+            return $this->sendPopup('Annulation enregistrée avec succès.');
+        } catch (\Throwable $e) {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            $this->saveLog('Exception cancelReservation : ' . $e->getMessage(), 'FATAL');
+            // Pour le debug, on renvoie le message complet de l’exception
+            return $this->sendToDev('Erreur interne lors de l\'annulation : ' . $e->getMessage());
         }
     }
+
 
 
 
@@ -321,7 +379,7 @@ final class Reservation
 
         // Vérifie si l'user ne reserve pas sa propre offres
         if ($infoOffer['iduser'] === $this->getUserId()) {
-           return $this->sendPopup('Vous ne pouvez pas reserver reserver votre offres');
+            return $this->sendPopup('Vous ne pouvez pas reserver reserver votre offres');
         }
 
         // Vérifie le nombre de places disponibles
@@ -382,14 +440,14 @@ final class Reservation
 
                     // Message passager
                     $reserverObject = "Confirmation de réservation";
-                    $reserverMessage = `
+                    $reserverMessage = "
                     Bonjour {$infoReserver['username']},\n\n
                     Votre réservation pour le trajet {$infoDriver['citydepart']} → {$infoDriver['arrivalcity']} prévu le {$infoDriver['datedepart']} a bien été prise en compte.\n\n
                     Nous vous invitons à contacter votre conducteur, {$infoDriver['username']}, à l’adresse suivante : {$infoDriver['email']}, pour organiser les modalités de rencontre.\n\n
                     Merci d’avoir choisi Ecoride.\n\n
                     Cordialement,\n
                     L’équipe Ecoride
-                `;
+                ";
 
 
                     //Envoi du message au passager

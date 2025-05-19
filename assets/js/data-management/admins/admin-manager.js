@@ -15,13 +15,10 @@ window.addEventListener("load", () => {
             functions[index]();
         }
 
-        localStorage.setItem('activePage', index);
     };
-    const activePage = localStorage.getItem('activePage');
-    const initialPage = activePage ? parseInt(activePage) : 0
 
     hidePages()
-    showPage(initialPage)
+    showPage(0)
 
     onglets.forEach((onglet, index) => {
         onglet.addEventListener("click", (event) => {
@@ -90,15 +87,12 @@ async function fetchRequest(action) {
             },
             body: JSON.stringify({ action: action })
         });
-        const responseText = await request.text();
-        console.log(responseText)
-        const responseData = JSON.parse(responseText);
-        return responseData;
+        const response = await request.json();
+         if (response.type){
+            handleResponse(response)
+        }
+        return response;
     } catch (error) {
-
-        handleResponse(error);
-
-
         console.error("Erreur lors de la récupération de la réponse :", error);
     }
 }
@@ -572,13 +566,14 @@ export async function moneyStat() {
 
 
 
-
 export async function errorLog() {
     const logInfo = await fetchRequest('getLogs');
     const logContainer = document.getElementById('logContainer');
+    
     const model = logContainer.querySelector('.logRow');
-
+    
     model.style.display = 'none';
+    logContainer.removeChild(model);
 
     const allLog = logInfo;
     let currentPage = 1;
@@ -590,19 +585,22 @@ export async function errorLog() {
     };
 
     function displayLog() {
+
         logContainer.innerHTML = '';
+
 
         const startIndex = (currentPage - 1) * logPerPage;
         const endIndex = currentPage * logPerPage;
         const logToDisplay = allLog.slice(startIndex, endIndex);
 
+ 
         logToDisplay.forEach(log => {
-            const newDiv = model.cloneNode(true);
-            newDiv.style.display = 'flex';
-            newDiv.querySelector('.logDate').textContent = log.timestamp;
-            newDiv.querySelector('.message').textContent = log.message;
-            newDiv.querySelector('.loglevel').textContent = log.loglevel;
-            logContainer.appendChild(newDiv);
+            const newRow = model.cloneNode(true);
+            newRow.style.display = 'table-row';
+            newRow.querySelector('.logDate').textContent = log.timestamp;
+            newRow.querySelector('.message').textContent = log.message;
+            newRow.querySelector('.loglevel').textContent = log.loglevel;
+            logContainer.appendChild(newRow);
         });
 
         const currentPageLabel = document.getElementById('currentLogPage');
@@ -626,7 +624,7 @@ export async function errorLog() {
         displayLog();
     }
 
-    // Navigation
+
     const nextBtn = document.getElementById('nextLogPage');
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
@@ -647,7 +645,7 @@ export async function errorLog() {
         });
     }
 
-    // Tri
+
     const sortDateBtn = document.getElementById('sortLogDate');
     if (sortDateBtn) {
         sortDateBtn.addEventListener('click', () => sortTable('date'));

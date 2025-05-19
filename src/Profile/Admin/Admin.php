@@ -109,44 +109,63 @@ final class Admin{
     
         public function getPdo() { return $this->pdo; }
         public function getAdminId() { return $this->adminId; }
-        public function getFirstName() { return htmlspecialchars_decode($this->firstName); }
-        public function getLastName() { return htmlspecialchars_decode($this->lastName); }
-        public function getPhone() { return htmlspecialchars($this->phone); }
-        public function getEmail() { return htmlspecialchars_decode($this->email); }
-        public function getRoad() { return htmlspecialchars_decode($this->road); }
-        public function getRoadComplement() { return htmlspecialchars_decode($this->roadComplement); }
-        public function getZipCode() { return htmlspecialchars_decode($this->zipCode); }
-        public function getCity() { return htmlspecialchars_decode($this->city); }
+        public function getFirstName() { return $this->firstName; }
+        public function getLastName() { return $this->lastName; }
+        public function getPhone() { return $this->phone; }
+        public function getEmail() { return $this->email; }
+        public function getRoad() { return $this->road; }
+        public function getRoadComplement() { return $this->roadComplement; }
+        public function getZipCode() { return $this->zipCode; }
+        public function getCity() { return $this->city; }
     
         // -------------------------------------------- Fonction Principales -------------------------------------------
     
-        public function getAdminInfo() {
-            $query = "SELECT a.firstname, a.lastname, a.phone, a.road, a.roadcomplement, a.zipcode, a.city, l.email
-                      FROM admins a
-                      JOIN logins l ON a.idlogin = l.loginid
-                      WHERE a.adminid = :adminId";
-            
-            $statement = $this->pdo->prepare($query);
-            $statement->bindValue(':adminId', $this->getAdminId(), PDO::PARAM_INT);
-            
-            try {
-                $statement->execute();
-                $adminInfo = $statement->fetch(PDO::FETCH_ASSOC);
-                
-                if ($adminInfo) {
-                    $adminInfo = array_map('trim', $adminInfo); //array_map pour nettoyer
-                    return [
-                        'status' => 'success',
-                        'data' => $adminInfo
-                    ];
-                }
-                return $this->sendToDev('Utilisateur non trouvé');
-                
-            } catch (PDOException $e) {
-                return $this->saveLog('Erreur lors de la récupération des données administrateur'.$e->getMessage(),'CRITICAL');
-            }
+ public function getAdminInfo() {
+    $query = "
+        SELECT a.firstname,
+               a.lastname,
+               a.phone,
+               a.road,
+               a.roadcomplement,
+               a.zipcode,
+               a.city,
+               l.email
+        FROM admins a
+        JOIN logins l ON a.idlogin = l.loginid
+        WHERE a.adminid = :adminId
+    ";
+
+    $statement = $this->pdo->prepare($query);
+    $statement->bindValue(':adminId', $this->getAdminId(), PDO::PARAM_INT);
+
+    try {
+        $statement->execute();
+        $adminInfo = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($adminInfo) {
+            $adminInfo = array_map('trim', $adminInfo);
+            $adminInfo = array_map(function($val) {
+                return htmlspecialchars_decode($val, ENT_QUOTES);
+            }, $adminInfo);
+
+            return [
+                'status' => 'success',
+                'data' => $adminInfo
+            ];
         }
-       
+
+        return $this->sendToDev('Utilisateur non trouvé');
+    } catch (PDOException $e) {
+        return $this->saveLog(
+            'Erreur lors de la récupération des données administrateur (ID=' 
+            . $this->getAdminId() 
+            . ') : ' 
+            . $e->getMessage(),
+            'CRITICAL'
+        );
+    }
+}
+
     
         public function updateAdminInfo($firstName, $lastName, $phone, $email, $road, $complement, $zipCode, $city) {
             try {

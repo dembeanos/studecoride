@@ -62,7 +62,7 @@ final class OpinionManager{
         $statement->bindValue(':opinionId', $this->getOpinionId());
 
         if ($statement->execute()) {
-            return $this->sendToDev('Avis validé');
+            return $this->sendPopup('Avis validé avec succès');
         }
     }
 
@@ -79,16 +79,14 @@ final class OpinionManager{
 
         if ($statement->execute()) {
             if ($statement->rowCount() > 0) {
-                return $this->sendToDev('Avis rejeté');
+                return $this->sendPopup('Avis rejeté avec suucès');
             }
         }
     }
 
 
 
-    public function getTripDetail()
-    {
-
+    public function getTripDetail() {
         // Méthode pour récupérer les détails d'une offre liée à un avis.
         // On utilise des alias pour distinguer les informations du passager et du conducteur,
         // car ils proviennent tous deux de la même table 'users' (et 'logins').

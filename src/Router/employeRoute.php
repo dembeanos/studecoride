@@ -30,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['updatePhoto'])) {
 }
 
 
+
 if ($data) {
     $action = isset($data['action']) ? $data['action'] : null;
     switch ($action) {

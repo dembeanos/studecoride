@@ -3,6 +3,7 @@ require_once __DIR__ . '/src/Authentification/auth.php';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,35 +13,39 @@ require_once __DIR__ . '/src/Authentification/auth.php';
     <meta property="og:site_name" content="EcoRide" />
     <meta property="og:title" content="Ecoride : Votre solution de covoiturage écologique" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="http://www.ecoride.com/" />
     <meta property="og:locale" content="fr_FR" />
     <title>Ecoride : Votre solution de covoiturage écologique et pratique</title>
     <link rel="stylesheet" href="/assets/css/home.css">
-    <link rel="canonical" href="http://www.ecoride.com/" />
 </head>
 
 <body>
     <header>
-        <?php include 'includes/header.php'; ?>
-        <h1>
-            <?php 
-            if (isUserConnected() || isAdminConnected() || isEmployeConnected()) {
-                echo "Bienvenue " . $_SESSION['firstName'] . " chez Ecoride" . " !";
-            } else {
-                echo "Bienvenue Chez Ecoride !";
-            }
-        ?>
-        </h1>
-        <div aria-label="Presentation de l'entreprise" class="presentation">
-            <p>EcoRide est la solution de covoiturage écologique et économique qui simplifie vos trajets.</p>
-            <p>Trouvez ou proposez un trajet en quelques clics, partagez vos frais, réduisez vos émissions de CO₂.</p>
-            <p>Voyagez en toute sécurité grâce à notre système de réservation fiable. </p>
-            <p>Rejoignez une communauté engagée pour une mobilité plus durable et solidaire. </p>
-            <p>EcoRide partageons la route, respectons la planète</p>
+        <div class='homeMenu'>
+            <?php include 'includes/header.php'; ?>
         </div>
-        <section aria-label="Barre de Recherche" class="search-bar">
-            <?php include_once 'includes/searchbar.php'; ?>
-        </section>
+        <div class='welcome'>
+            <h1>
+                <?php
+                if (isUserConnected() || isAdminConnected() || isEmployeConnected()) {
+                    echo "Bienvenue " . $_SESSION['firstName'] . " chez Ecoride" . " !";
+                } else {
+                    echo "Bienvenue Chez Ecoride !";
+                }
+                ?>
+            </h1>
+
+                <div aria-label="Presentation de l'entreprise" class="presentation">
+                    <p>EcoRide est la solution de covoiturage écologique et économique qui simplifie vos trajets.</p>
+                    <p>Trouvez ou proposez un trajet en quelques clics, partagez vos frais, réduisez vos émissions de CO₂.</p>
+                    <p>Voyagez en toute sécurité grâce à notre système de réservation fiable. </p>
+                    <p>Rejoignez une communauté engagée pour une mobilité plus durable et solidaire. </p>
+                    <p>EcoRide partageons la route, respectons la planète</p>
+                </div>
+                <div aria-label="Barre de Recherche" class="search-bar">
+                    <?php include_once 'includes/searchbar.php'; ?>
+                </div>
+
+        </div>
     </header>
 
     <main>
@@ -79,7 +84,7 @@ require_once __DIR__ . '/src/Authentification/auth.php';
 
             </aside>
 
-            <aside aria-label="Informations sur l'aide de L'Etat et promotion Ecoride pour toute inscription gratuite"class="Offer">
+            <aside aria-label="Informations sur l'aide de L'Etat et promotion Ecoride pour toute inscription gratuite" class="Offer">
 
                 <div class="government">
                     <img alt="Auto" src="assets/images/accueil/auto.png">
@@ -89,7 +94,7 @@ require_once __DIR__ . '/src/Authentification/auth.php';
                         <p>Pour en savoir plus rendez vous
                             <a target="_blank" rel="noopener noreferrer" title="vers le site de l'Etat"
                                 href="https://www.ecologie.gouv.fr/politiques-publiques/covoiturage-france-ses-avantages-reglementation-vigueur">
-                                sur le site de l'État. 
+                                sur le site de l'État.
                             </a>
                         </p>
                     </div>

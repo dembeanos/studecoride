@@ -1,22 +1,22 @@
 <?php
-require_once __DIR__ .'/../Profile/User/User.php';
-require_once __DIR__ .'/../Profile/User/Trip.php';
-require_once __DIR__ .'/../Profile/User/TripStatus.php';
-require_once __DIR__ .'/../Profile/shared/Secure.php';
-require_once __DIR__ .'/../Profile/User/Role.php';
-require_once __DIR__ .'/../Profile/User/Reservation.php';
-require_once __DIR__ .'/../Profile/User/Preference.php';
-require_once __DIR__ .'/../Profile/shared/Photo.php';
-require_once __DIR__ .'/../Profile/User/Opinion.php';
-require_once __DIR__ .'/../Profile/User/Car.php';
-require_once __DIR__ .'/../Profile/User/Credit.php';
-require_once __DIR__ .'/../Profile/shared/Messages.php';
-
+require_once __DIR__ . '/../Profile/User/User.php';
+require_once __DIR__ . '/../Profile/User/Trip.php';
+require_once __DIR__ . '/../Profile/User/TripStatus.php';
+require_once __DIR__ . '/../Profile/shared/Secure.php';
+require_once __DIR__ . '/../Profile/User/Role.php';
+require_once __DIR__ . '/../Profile/User/Reservation.php';
+require_once __DIR__ . '/../Profile/User/Preference.php';
+require_once __DIR__ . '/../Profile/shared/Photo.php';
+require_once __DIR__ . '/../Profile/User/Opinion.php';
+require_once __DIR__ . '/../Profile/User/Car.php';
+require_once __DIR__ . '/../Profile/User/Credit.php';
+require_once __DIR__ . '/../Profile/shared/Messages.php';
 //Verification de session toutes ces méthodes sont soumise à authentification
 session_start();
 
+
 //Initialisation des variables
-$userId = $_SESSION['userId'] ;
+$userId = $_SESSION['userId'];
 $data = null;
 $response = null;
 
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['updatePhoto'])) {
     $photo = $_FILES['updatePhoto'];
 
     if ($photo['error'] === UPLOAD_ERR_OK) {
-        $send = new Photo($pdo, $userId,null,null);
+        $send = new Photo($pdo, $userId, null, null);
         try {
             $send->updatePhoto($photo);
             $response = ['status' => 'success', 'message' => 'Photo mise à jour avec succès'];
@@ -45,9 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['updatePhoto'])) {
 if ($data) {
     $action = isset($data['action']) ? $data['action'] : null;
     switch ($action) {
-        case 'checkSession': // verification de connexion pour réservation d'offre
-            $response = ['isLoggedIn' => isset($_SESSION['userId'])];
-            break;
         case 'getUserInfo':
             $send = new User($userId, $pdo);
             $userData = $send->getUserInfo();
@@ -181,10 +178,11 @@ if ($data) {
             break;
         case 'addReservation':
             $send = new Reservation($pdo, $userId);
-            $reservationData = $send->addReservation($data['data']['offerid'] ?? null,
-                                                        $data['data']['reservedPlaces'] ?? null
-        );
-            $response= $reservationData;
+            $reservationData = $send->addReservation(
+                $data['data']['offerid'] ?? null,
+                $data['data']['reservedPlaces'] ?? null
+            );
+            $response = $reservationData;
             break;
         case 'cancelReservation':
             $send = new Reservation($pdo, $userId);
@@ -199,25 +197,25 @@ if ($data) {
             $response = $reservationData;
             break;
         case 'cancelTrip':
-            $send = new TripStatus ($pdo, $userId);
+            $send = new TripStatus($pdo, $userId);
             $send->setTripId($data['data']['tripId'] ?? null);
             $tripData = $send->cancelTrip();
             $response = $tripData;
             break;
-        case 'startTrip' :
-            $send = new TripStatus ($pdo, $userId);
+        case 'startTrip':
+            $send = new TripStatus($pdo, $userId);
             $send->setTripId($data['data']['tripId'] ?? null);
             $tripData = $send->startTrip();
             $response = $tripData;
             break;
-        case 'endTrip' :
-            $send = new TripStatus ($pdo, $userId);
+        case 'endTrip':
+            $send = new TripStatus($pdo, $userId);
             $send->setTripId($data['data']['tripId'] ?? null);
             $tripData = $send->endTrip();
             $response = $tripData;
             break;
         default: //Si aucune action correspond retour d'un message au meme format que ExceptionTrait
-            $response = [//de maniere a veiller a rentrer dans la condition de handleResponse coté js
+            $response = [ //de maniere a veiller a rentrer dans la condition de handleResponse coté js
                 'type' => 'dev',
                 'message' => 'Action non reconnue'
             ];

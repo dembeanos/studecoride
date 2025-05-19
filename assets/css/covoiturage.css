@@ -1,5 +1,3 @@
-/* covoiturage.css – Design complet responsive */
-
 /* =========================
    Variables globales
    ========================= */
@@ -43,10 +41,11 @@ a:hover {
 }
 .pageTitle {
   font-size: clamp(1.8rem, 4vw, 2.5rem);
-  margin-bottom: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 2rem;
 }
 .introText {
-  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-size: clamp(1.5rem, 2vw, 1.7rem);
   color: #555;
 }
 
@@ -87,7 +86,8 @@ main {
    Styles du formulaire
    ========================= */
 .option h2 {
-  font-size: 1.6rem;
+  font-size: 2rem;
+  margin-top: 1rem;
   margin-bottom: 1rem;
   text-align: center;
 }
@@ -95,27 +95,92 @@ main {
   margin-bottom: 1.5rem;
 }
 .filter-group label {
-  display: block;
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 1.5rem;
 }
+
 .filter-group input,
 .filter-group select {
   width: 100%;
   padding: 0.6rem;
   border: 1px solid #ccc;
   border-radius: var(--border-radius);
-  font-size: 1rem;
+  font-size: 1.5rem;
+
 }
 
+.filter-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.filter-title{
+  font-size: 1.5rem;
+}
 .zone-selector {
-  text-align: center;
-  margin: 1.5rem 0;
+  width: 300px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
 }
+
 .zone-selector h2 {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 10px;
+  font-size: 1.8rem;
 }
+
+#kmRange {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #4caf50 0%, #4caf50 10%, #ddd 10%, #ddd 100%);
+  outline: none;
+  margin: 15px 0;
+  cursor: pointer;
+}
+
+/* Curseur pour Chrome, Edge, Safari */
+#kmRange::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  background: #4caf50;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #388e3c;
+  margin-top: -7px;
+  transition: background 0.3s ease;
+}
+#kmRange::-webkit-slider-thumb:hover {
+  background: #388e3c;
+}
+
+/* Curseur pour Firefox */
+#kmRange::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  background: #4caf50;
+  border-radius: 50%;
+  border: 2px solid #388e3c;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+#kmRange::-moz-range-thumb:hover {
+  background: #388e3c;
+}
+
+#kmRange {
+  background-size: calc((var(--value) - 1) * 1%) 100%;
+  background-repeat: no-repeat;
+}
+
 .range-value {
   font-size: 1.2rem;
   margin-top: 0.5rem;
@@ -132,9 +197,11 @@ main {
   padding: 0.8rem;
   border: none;
   border-radius: var(--border-radius);
-  font-size: 1rem;
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
   cursor: pointer;
-  color: white;
+  color: black;
   box-shadow: var(--box-shadow);
 }
 .btn-apply {
@@ -144,12 +211,12 @@ main {
   background: rgb(252, 180, 47);
 }
 .btn-apply:hover {
-  background: darken(var(--secondary-color), 10%);
+  background: rgb(21, 114, 3);
   transform: scale(1.05);
   transition: transform 0.3s ease;
 }
 .btn-reset:hover {
-  background: darken(rgb(252, 180, 47), 10%);
+  background: rgb(240, 43, 43);
   transform: scale(1.05);
   transition: transform 0.3s ease;
 }
@@ -157,11 +224,69 @@ main {
 /* =========================
    Carte Interactive
    ========================= */
-#map {
-  width: 100%;
-  height: 400px;
+.offcanvas-map {
+  position: fixed;
+  top: 50%;
+  right: -100%;
+  width: 80%;
+   height: 60vh; 
+  max-height: 200vh;
+  transform: translateY(-50%);
+  background: var(--primary-color);
+  box-shadow: -4px 0 8px rgba(0,0,0,0.2);
+  transition: right 0.3s ease;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
   border-radius: var(--border-radius);
-  margin-top: 1rem;
+}
+
+.offcanvas-map.open {
+  right: 0;
+}
+
+.offcanvas-map #close-map {
+  align-self: flex-end;
+  margin: 1rem;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.offcanvas-map #map {
+  flex: 1;
+  margin: 1rem;
+  border-radius: var(--border-radius);
+}
+
+
+/* ========================
+ Boîtes de suggestions 
+ ========================= */
+#departSuggestionBox,
+#arrivalSuggestionBox {
+  position: absolute;
+  background: white;
+  border: 1px solid var(--border);
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 100;
+  border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
+  box-shadow: var(--shadow);
+  font-size: 1.5rem;
+}
+
+#departSuggestionBox div,
+#arrivalSuggestionBox div {
+  padding: var(--spacing-sm);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+#departSuggestionBox div:hover,
+#arrivalSuggestionBox div:hover {
+  background: var(--primary-color);
 }
 
 /* =========================
@@ -170,159 +295,107 @@ main {
 .sort {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
+  margin-right: 1rem;
   margin-bottom: 1rem;
 }
 .sort label {
-  font-size: 1rem;
+  font-size: 1.5rem;
   margin-right: 0.5rem;
 }
 .sort select {
   padding: 0.5rem;
-  font-size: 1rem;
+  font-size: 1.5rem;
 }
 
 /* =========================
    Résultats des trajets
    ========================= */
-/* Container de chaque résultat */
-/* Container du résultat */
+main h2{
+  font-size: 2rem;
+}
 .result-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem;
+  gap: 1.5rem; 
+  padding: 1.25rem;
   width: 100%;
   border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.25rem;
   background-color: #f9f9f9;
+  font-size: 1rem;
 }
 
-/* Image à gauche */
 .result-item img {
-  width: 120px;
-  height: auto;
+  width: 140px; 
+  height: 100px; 
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 0.5rem;
 }
 
-/* Contenu textuel (deux colonnes) */
 .result-content {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* 2 colonnes */
+  grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
   flex: 1;
-  padding-right: 100px; /* Espace pour le bouton */
 }
 
-/* Titre et contenu */
 .result-content h3 {
-  font-size: 1.2rem;
-  font-weight: bold;
-  grid-column: span 2; /* Titre sur toute la largeur */
+  font-size: 1.4rem;
+  font-weight: 600;
+  grid-column: span 2;
+  margin-bottom: 0.5rem;
 }
 
-/* Paragraphes dans les colonnes */
 .result-content p {
-  margin: 0.25rem 0;
-  font-size: 0.95rem;
+  margin: 0.5rem 0;
+  font-size: 1rem;
+  line-height: 1.4;
 }
 
-/* Bouton à droite, positionné après les colonnes */
 .result-item .select-button {
-  position: relative;
-  right: 10px;
-  bottom: 10px;
-  padding: 0.5rem 1rem;
+  flex-shrink: 0;
+  padding: 0.75rem 1.25rem;
   background-color: var(--primary-color);
-  color: rgb(0, 0, 0);
+  color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: 0.5rem;
   cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
 .result-item .select-button:hover {
   background-color: var(--secondary-color);
-}
-
-
-.select-button {
-  display: inline-block;
-  padding: 0.6rem 1rem;
-  background: var(--secondary-color);
-  color: white;
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-}
-.select-button:hover {
   transform: scale(1.05);
-  transition: transform 0.3s ease;
 }
 
-/* =========================
-   Pop-up Détail
-   ========================= */
-.popup {
-  display: none;
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.5);
-  z-index: 1000;
-  justify-content: center;
-  align-items: center;
-}
-.popup-content {
-  background: white;
-  padding: 1rem;
-  border-radius: var(--border-radius);
-  max-width: 90%;
-  max-height: 90%;
-  overflow: auto;
-}
-.close-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-size: 2rem;
-  cursor: pointer;
-}
 
-  /* Conteneur principal pour la pub */
 .pub {
   display: flex;
-  flex-direction: column; /* Aligne le contenu en colonne (image puis texte) */
-  align-items: center; /* Centre tout le contenu horizontalement */
-  justify-content: center; /* Centre tout le contenu verticalement */
-  gap: 1rem; /* Ajoute un peu d'espace entre l'image et le texte */
-  margin: 2rem 0; /* Marge pour le conteneur de la pub */
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
 }
 
-/* Texte de la pub */
-.pubText {
-  display: flex;
-  flex-direction: column; /* Le texte sera sur plusieurs lignes */
-  align-items: center; /* Centre le texte horizontalement sous l'image */
-  text-align: center; /* Centre le texte à l'intérieur du conteneur */
-  font-size: 1.5rem; /* Taille de la police */
-  margin: 0.5rem 0; /* Marge entre les éléments de texte */
-  max-width: 80%; /* Limite la largeur du texte */
-}
-
-/* Conteneur pour l'image */
 .pubImg {
-  text-align: center; /* Centre l'image */
-  margin-bottom: 1rem; /* Marge sous l'image */
+  order: 2;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
-/* Style de l'image */
-.pubImg img {
-  max-width: 200px; /* Taille maximale de l'image */
-  height: auto; /* Garder les proportions de l'image */
+.pubText {
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  font-size: 2rem;
+  margin: 0.5rem 0;
+  max-width: 80%;
 }
 
 
@@ -332,7 +405,7 @@ main {
    ========================= */
 @media (max-width: 1024px) {
   .contain {
-    flex-wrap: nowrap; /* garde deux colonnes, se resserrent */
+    flex-wrap: nowrap;
   }
   .option {
     flex: 0 0 300px;
@@ -340,7 +413,7 @@ main {
 }
 @media (max-width: 768px) {
   .contain {
-    flex-wrap: wrap; /* empile colonne */
+    flex-wrap: wrap;
   }
   .option,
   main {

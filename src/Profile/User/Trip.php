@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-require_once __DIR__ .'/../../Database/Database.php';
-require_once __DIR__ .'/../../Traits/Exception.php';
+require_once __DIR__ . '/../../Database/Database.php';
+require_once __DIR__ . '/../../Traits/Exception.php';
 
 $db = new Database();
 $pdo = $db->getPdo();
@@ -179,35 +179,67 @@ final class Trip
 
 
     // GETTERS
-    public function getpdo(){return htmlspecialchars_decode($this->pdo, ENT_QUOTES);}
-    public function getUserId(){return $this->userId;}
-    public function getCityDepart(){return htmlspecialchars_decode($this->cityDepart, ENT_QUOTES);}
-    public function getArrivalCity(){return htmlspecialchars_decode($this->arrivalCity, ENT_QUOTES);}
-    public function getRoadDepart(){return htmlspecialchars_decode($this->roadDepart, ENT_QUOTES);}
-    public function getArrivalRoad(){return htmlspecialchars_decode($this->arrivalRoad, ENT_QUOTES);}
-    public function getHourDepart(){return htmlspecialchars_decode($this->hourDepart, ENT_QUOTES);}
-    public function getHourArrival(){return htmlspecialchars_decode($this->hourArrival, ENT_QUOTES);}
-    public function getDateDepart(){return htmlspecialchars_decode($this->dateDepart, ENT_QUOTES);}
-    public function getDateArrival(){return htmlspecialchars_decode($this->dateArrival, ENT_QUOTES);}
-    public function getPrice(){return htmlspecialchars_decode($this->price, ENT_QUOTES);}
-    public function getDuration(){return htmlspecialchars_decode($this->duration, ENT_QUOTES);}
-    public function getCar(){return htmlspecialchars_decode($this->car, ENT_QUOTES);}
-    public function getPreference(){return htmlspecialchars_decode($this->preference, ENT_QUOTES);}
-    public function getPlaceAvailable(){return htmlspecialchars_decode($this->placeAvailable, ENT_QUOTES);}
-    public function getInseeArrival(){return htmlspecialchars_decode($this->inseeArrival, ENT_QUOTES);}
-    public function getInseeDepart(){return htmlspecialchars_decode($this->inseeDepart, ENT_QUOTES);}
-    public function getReservationsStatus(){return htmlspecialchars_decode($this->totalReservations, ENT_QUOTES);}
-    public function getStatus(){return htmlspecialchars_decode($this->status, ENT_QUOTES);}
-    public function getTripId(){return $this->tripId;}
+    public function getpdo(){ return $this->pdo; }
+    public function getUserId(){ return $this->userId; }
+    public function getCityDepart(){ return $this->cityDepart; }
+    public function getArrivalCity(){ return $this->arrivalCity; }
+    public function getRoadDepart(){ return $this->roadDepart; }
+    public function getArrivalRoad(){ return $this->arrivalRoad; }
+    public function getHourDepart(){ return $this->hourDepart; }
+    public function getHourArrival(){ return $this->hourArrival; }
+    public function getDateDepart(){ return $this->dateDepart; }
+    public function getDateArrival(){ return $this->dateArrival; }
+    public function getPrice(){ return $this->price; }
+    public function getDuration(){ return $this->duration; }
+    public function getCar(){ return $this->car; }
+    public function getPreference(){ return $this->preference; }
+    public function getPlaceAvailable(){ return $this->placeAvailable; }
+    public function getInseeArrival(){ return $this->inseeArrival; }
+    public function getInseeDepart(){ return $this->inseeDepart; }
+    public function getReservationsStatus(){ return $this->totalReservations; }
+    public function getStatus(){ return $this->status; }
+    public function getTripId(){ return $this->tripId; }
 
 
     //Fonctions principales:
 
-    public function addTrip( $cityDepart, $arrivalCity, $hourDepart, $roadDepart, $arrivalRoad, $hourArrival, 
-    $dateDepart, $dateArrival, $price, $duration, $car, $preference, $placeAvailable, $inseeArrival, $inseeDepart) {
+    public function addTrip(
+        $cityDepart,
+        $arrivalCity,
+        $hourDepart,
+        $roadDepart,
+        $arrivalRoad,
+        $hourArrival,
+        $dateDepart,
+        $dateArrival,
+        $price,
+        $duration,
+        $car,
+        $preference,
+        $placeAvailable,
+        $inseeArrival,
+        $inseeDepart
+    ) {
+
+        if ($error = $this->setCityDepart($cityDepart)) return $error;
+        if ($error = $this->setArrivalCity($arrivalCity)) return $error;
+        if ($error = $this->setHourDepart($hourDepart)) return $error;
+        if ($error = $this->setHourArrival($hourArrival)) return $error;
+        if ($error = $this->setDateDepart($dateDepart)) return $error;
+        if ($error = $this->setDateArrival($dateArrival)) return $error;
+        if ($error = $this->setRoadDepart($roadDepart)) return $error;
+        if ($error = $this->setArrivalRoad($arrivalRoad)) return $error;
+        if ($error = $this->setPrice($price)) return $error;
+        if ($error = $this->setDuration($duration)) return $error;
+        if ($error = $this->setCar($car)) return $error;
+        if ($error = $this->setPreference($preference)) return $error;
+        if ($error = $this->setPlaceAvailable($placeAvailable)) return $error;
+        if ($error = $this->setInseeDepart($inseeDepart)) return $error;
+        if ($error = $this->setInseeArrival($inseeArrival)) return $error;
+
 
         try {
-             $this->pdo->beginTransaction();
+            $this->pdo->beginTransaction();
             $query = "SELECT COUNT(*) FROM offers 
                       WHERE citydepart = :cityDepart
                       AND arrivalcity = :arrivalCity
@@ -215,33 +247,18 @@ final class Trip
                       AND hourdepart = :hourDepart";
 
             $statement = $this->pdo->prepare($query);
-            $statement->bindValue(':cityDepart', $cityDepart, PDO::PARAM_STR);
-            $statement->bindValue(':arrivalCity', $arrivalCity, PDO::PARAM_STR);
-            $statement->bindValue(':dateDepart', $dateDepart, PDO::PARAM_STR);
-            $statement->bindValue(':hourDepart', $hourDepart, PDO::PARAM_STR);
+            $statement->bindValue(':cityDepart', $this->getCityDepart(), PDO::PARAM_STR);
+            $statement->bindValue(':arrivalCity', $this->getArrivalCity(), PDO::PARAM_STR);
+            $statement->bindValue(':dateDepart', $this->getDateDepart(), PDO::PARAM_STR);
+            $statement->bindValue(':hourDepart', $this->getHourDepart(), PDO::PARAM_STR);
             $statement->execute();
 
             $count = $statement->fetchColumn();
 
             if ($count > 0) {
-                $this->sendPopup("Une offre similaire existe déjà pour ce trajet à cette date et heure.");
+                return $this->sendPopup("Une offre similaire existe déjà pour ce trajet à cette date et heure.");
             }
 
-            if ($error = $this->setCityDepart($cityDepart)) return $error;
-            if ($error = $this->setArrivalCity($arrivalCity)) return $error;
-            if ($error = $this->setHourDepart($hourDepart)) return $error;
-            if ($error = $this->setHourArrival($hourArrival)) return $error;
-            if ($error = $this->setDateDepart($dateDepart)) return $error;
-            if ($error = $this->setDateArrival($dateArrival)) return $error;
-            if ($error = $this->setRoadDepart($roadDepart)) return $error;
-            if ($error = $this->setArrivalRoad($arrivalRoad)) return $error;
-            if ($error = $this->setPrice($price)) return $error;
-            if ($error = $this->setDuration($duration)) return $error;
-            if ($error = $this->setCar($car)) return $error;
-            if ($error = $this->setPreference($preference)) return $error;
-            if ($error = $this->setPlaceAvailable($placeAvailable)) return $error;
-            if ($error = $this->setInseeDepart($inseeDepart)) return $error;
-            if ($error = $this->setInseeArrival($inseeArrival)) return $error;
 
             $query = 'INSERT INTO offers (iduser, idauto, idpreference, hourdepart, datedepart, roaddepart, citydepart, arrivalcity,hourarrival,arrivalroad, datearrival, price, placeavailable, duration, inseeDepart, inseeArrival)
                       VALUES (:userId, :car, :preference, :hourDepart, :dateDepart, :roadDepart, :cityDepart, :arrivalCity, :hourArrival, :arrivalRoad, :dateArrival, :price, :placeAvailable, :duration, :inseeDepart, :inseeArrival)';
@@ -266,29 +283,29 @@ final class Trip
             $statement->bindValue(':inseeDepart', $this->getInseeDepart());
 
             $statement->execute();
-             $this->pdo->commit();
+            $this->pdo->commit();
             return $this->sendUserSuccess('Votre proposition de trajet à bien été prise en compte', 'addTrip');
         } catch (Exception $e) {
             $this->pdo->rollBack();
             $this->sendPopup('Oups ! Échec de l\'enregistrement de votre trajet, vérifiez les champs ou réessayez un peu plus tard.');
-            return $this->saveLog('Erreur lors de l\enregistrement d\'une offres, Pour : '.$this->getUserId().$e,'FATAL');
+            return $this->saveLog('Erreur lors de l\enregistrement d\'une offres, Pour : ' . $this->getUserId() . $e, 'FATAL');
         }
     }
 
 
-
     public function getTrip()
     {
+        //verification que les offres de l'user ont le bon status
         $updateStatus = "UPDATE offers SET status = 'passed' WHERE datedepart < CURRENT_DATE AND status !='passed'";
 
         $this->pdo->exec($updateStatus);
 
         $query = "SELECT o.datedepart, o.offerid, o.price, o.hourdepart, o.citydepart, o.hourarrival, o.datearrival, o.arrivalcity, o.placeAvailable, o.status,
-            COUNT(r.idoffer) AS totalReservations
-            FROM offers o
-            LEFT JOIN reservations r ON o.offerid = r.idoffer AND r.status = 'false' 
-            WHERE o.iduser = :userId
-            GROUP BY o.offerid";
+        COUNT(r.idoffer) AS totalReservations
+        FROM offers o
+        LEFT JOIN reservations r ON o.offerid = r.idoffer AND r.status = 'false' 
+        WHERE o.iduser = :userId
+        GROUP BY o.offerid";
 
         try {
             $statement = $this->pdo->prepare($query);
@@ -296,13 +313,24 @@ final class Trip
             $statement->execute();
             $offreInfo = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+            // Application de htmlspecialchars_decode
+            foreach ($offreInfo as &$offre) {
+                
+                if (isset($offre['citydepart'])) {
+                    $offre['citydepart'] = htmlspecialchars_decode($offre['citydepart'], ENT_QUOTES);
+                }
+                if (isset($offre['arrivalcity'])) {
+                    $offre['arrivalcity'] = htmlspecialchars_decode($offre['arrivalcity'], ENT_QUOTES);
+                }
+            }
+            unset($offre); // Efface la référence du dernier élément
+
             return [
                 'status' => 'success',
                 'data' => $offreInfo
             ];
         } catch (PDOException $e) {
-            return $this->saveLog('Echec lors de la récuparation des offre de l\'utilisateur, Pour userId:' . 'UserId' . $this->getUserId() . $e->getMessage(), 'CRITICAL');
+            return $this->saveLog('Echec lors de la récupération des offres de l\'utilisateur, Pour userId:' . $this->getUserId() . ' - ' . $e->getMessage(), 'CRITICAL');
         }
     }
-
 }

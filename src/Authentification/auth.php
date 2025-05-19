@@ -3,6 +3,15 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $input = json_decode(file_get_contents('php://input'), true);
+    if (isset($input['action']) && $input['action'] === 'checkSession') {
+        $isLoggedIn = isUserConnected();
+        header('Content-Type: application/json');
+        echo json_encode(['isLoggedIn' => $isLoggedIn]);
+        exit;
+    }
+}
 // Fonctions verification de connexion
 function isUserConnected(): bool {
     
@@ -38,4 +47,7 @@ function checkAuthEmploye(): void {
         exit;
     }
 }
+
+
+
 ?>

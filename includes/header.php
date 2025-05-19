@@ -7,7 +7,6 @@
         </a>
     </div>
 
-    <!-- Hamburger button -->
     <div class="hamburger" id="hamburger">
         <span></span>
         <span></span>

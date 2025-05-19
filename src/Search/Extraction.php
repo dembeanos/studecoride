@@ -167,10 +167,10 @@ SQL;
         return $offers;
     }
 
-    /**
+    /*
      * Filtre les offres selon les préférences de l'utilisateur
-     *
-     * @return array|string Tableau des offres filtrées ou message d'erreur
+     
+     * Tableau des offres filtrées ou message d'erreur
      */
     public function filterOffers()
     {

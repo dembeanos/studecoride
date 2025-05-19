@@ -31,12 +31,8 @@ trait MessageTrait {
             'timestamp' => date('Y-m-d H:i:s')
         ];
 
-        try {
             $this->mongo->messages->insertOne($message);
-            echo "Message envoyé avec succès!";
-        } catch (Exception $e) {
-            echo "Erreur MongoDB: " . $e->getMessage();
-        }
+        
 
     }
 

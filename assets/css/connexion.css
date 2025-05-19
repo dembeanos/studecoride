@@ -1,13 +1,32 @@
 :root {
-  --primary-color: rgba(232, 248, 210, 1);     /* fond formulaire */
-  --secondary-color: rgba(112, 193, 61, 1);    /* accent, boutons */
-  --background: rgba(218, 227, 236, 1);        /* fond global */
-  --text-color: #222;                          /* texte */
-  --error-color: #c0392b;                      /* message d’erreur */
-  --input-border: #ccc;                        /* bordure inputs */
-  font-size: 1.2rem;                           /* taille de base du texte */
+  /* Palette de couleurs identique */
+  --primary-color: rgba(232, 248, 210, 1);
+  --secondary-color: rgba(112, 193, 61, 1);
+  --background: rgba(218, 227, 236, 1);
+  --surface: #ffffff;
+  --text: #333333;
+  --border: #dddddd;
+  
+  --border-radius-sm: 0.5rem;
+  --border-radius: 1rem;
+  --border-radius-lg: 2rem;
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --transition: all 0.3s ease;
+
+  --font-size: 1.5rem;
+  --font-size-md: 1.5rem;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-xxl: 2rem;
 }
 
+/* Reset de base */
 *,
 *::before,
 *::after {
@@ -16,64 +35,66 @@
   padding: 0;
 }
 
-html, body {
-  height: 100%;
-  font-family: 'Segoe UI', sans-serif;
-  font-size: 1.2rem;
-  background-color: var(--background);
-  color: var(--text-color);
-}
-
 body {
+  background: var(--background);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  font-size: var(--font-size);
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
-/* Header & Footer */
-header, footer {
-  background: var(--secondary-color);
-  color: #fff;
+h1, h2 {
   text-align: center;
+  margin-bottom: var(--spacing-lg);
+  font-weight: 700;
+}
 
+h1 {
+  margin-top: 5rem;
+  font-size: clamp(var(--font-size-xl), 5vw, calc(var(--font-size-xxl) * 1.5));
 }
 
 h2 {
-  font-size: 1.4rem;
+  font-size: clamp(var(--font-size-lg), 4vw, var(--font-size-xl));
 }
 
-/* Formulaire centré */
+/* Formulaire de connexion centré */
 form {
-  background: var(--primary-color);
+  background: var(--surface);
+  padding: var(--spacing-lg);
+  margin: var(--spacing-lg) auto;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
   max-width: 400px;
   width: 90%;
-  margin: 2rem auto;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  display: flex;
-  flex-direction: column;
-  gap: 1.2rem;
-  flex: 1; /* pousse le footer en bas */
+  display: grid;
+  gap: var(--spacing-lg);
 }
 
-/* Sections internes */
-form section {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+section {
+  display: grid;
+  gap: var(--spacing);
 }
 
+/* Labels et inputs */
 label {
-  margin-bottom: 0.3rem;
+  display: block;
+  font-size: var(--font-size-md);
+  margin-bottom: var(--spacing-xs);
+  font-weight: 600;
 }
 
 input[type="email"],
 input[type="password"] {
   width: 100%;
-  padding: 0.6rem;
-  border: 1px solid var(--input-border);
-  border-radius: 4px;
-  font-size: 1rem;
+  padding: var(--spacing-sm) var(--spacing);
+  font-size: var(--font-size);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-sm);
+  transition: var(--transition);
 }
 
 input:focus {
@@ -83,58 +104,61 @@ input:focus {
 }
 
 /* Bouton principal */
-button.btn-primary {
+.btn-primary {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: var(--spacing-sm) var(--spacing);
   background: var(--secondary-color);
   color: #fff;
-  padding: 0.8rem;
-  font-size: 1rem;
+  font-size: var(--font-size-md);
+  font-weight: 600;
   border: none;
-  border-radius: 4px;
+  border-radius: var(--border-radius-sm);
   cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
-  
-  display: block;       /* passe en block pour que margin auto fonctionne */
-  margin: 0.8rem auto;   /* 0.8rem vertical (ton padding), auto horizontal */
+  transition: var(--transition);
+  box-shadow: var(--shadow);
 }
-button.btn-primary:hover {
-  background: color(rgb(0, 105, 11));
-  transform: scale(1.02);
+
+.btn-primary:hover {
+  background: #61A835;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 
 /* Lien d’inscription */
-a {
+form a {
+  display: block;
   text-align: center;
   color: var(--secondary-color);
-  font-size: 1rem;
   text-decoration: none;
-  margin-top: 0.5rem;
+  font-size: var(--font-size-md);
+  margin:1rem 3rem 1rem 3rem
 }
-a:hover {
+
+form a:hover {
   text-decoration: underline;
 }
 
 /* Message d’erreur */
 .error-message {
-  color: var(--error-color);
+  color: red;
   text-align: center;
-  margin: 1rem 0;
+  margin-top: var(--spacing);
 }
 
-/* Sticky footer : pousse le footer en bas si contenu court */
-footer {
-  margin-top: auto;
-}
+/* Responsive */
+@media (max-width: 480px) {
+  :root {
+    --spacing: 0.75rem;
+    --spacing-lg: 1.5rem;
+  }
 
-/* Responsive tablette et + */
-@media (min-width: 600px) {
   form {
-    padding: 2rem;
-    gap: 1.5rem;
+    padding: var(--spacing);
   }
-  h2 {
-    font-size: 1.6rem;
-  }
-  button.btn-primary {
-    font-size: 1.1rem;
+
+  h1 {
+    font-size: clamp(var(--font-size-lg), 5vw, var(--font-size-xl));
   }
 }

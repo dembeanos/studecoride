@@ -63,37 +63,36 @@ export async function updatePassword() {
 
 
 
+
 export async function updatePhoto() {
     let {inputPhoto} = initEmployeVar();
     let photo = inputPhoto.files[0];
-    if (photo) {
-        try {
-            const formData = new FormData();
-            formData.append('action', 'updatePhoto');
-            formData.append('updatePhoto', photo);
-            const response = await fetch('/src/Router/employeRoute.php', { method: 'POST', body: formData });
-            const responseText = await response.text();
-            console.log("Réponse brute du serveur:", responseText); 
-
-            try {
-                const updateResponse = JSON.parse(responseText); 
-                if (updateResponse.status === 'success') {
-                    console.dir(updateResponse); 
-                } else {
-                    console.error('Erreur:', updateResponse.message); 
-                }
-                userInfo();
-            } catch (error) {
-                console.error('Erreur de parsing JSON:', error);
-                console.log('Contenu de la réponse:', responseText); 
-            }
-        } catch (error) {
-            console.error('Erreur de requête:', error);
-        }
-    } else {
-        console.error("Aucun fichier sélectionné");
-    }
-}
+    if (!photo) {
+           console.error("Aucun fichier sélectionné");
+           return;
+       }
+   
+       try {
+           const formData = new FormData();
+           formData.append('action', 'updatePhoto');
+           formData.append('updatePhoto', photo);
+   
+           const response = await fetch('/src/Router/employeRoute.php', { method: 'POST', body: formData });
+   
+           if (!response.ok) {
+               console.error('Erreur serveur, statut:', response.status);
+               return;
+           }
+           const updateResponse = await response.json();
+           if (updateResponse.type) {
+               handleResponse(updateResponse)
+           }
+           adminInfo();
+       } catch (error) {
+           console.error('Erreur lors de la requête ou du parsing JSON:', error);
+       }
+   }
+   
 
 
 export async function validationOpinion(validOpinion) {
@@ -128,7 +127,7 @@ export async function getTripInfo(tripInfo) {
     console.log(updateData.opinionId);
 
     try {
-        let response = await fetch('/src/Profile/Employee/EmployeRequestRoute.php', {
+        let response = await fetch('/src/Router/employeRoute.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ action: 'getTripDetail', data :updateData })
@@ -143,23 +142,24 @@ export async function getTripInfo(tripInfo) {
             const tripDetails = json[0];  // On prend le premier objet de l'array
 
             // Construction du message à afficher dans l'alert
-            const tripMessage = `
-                <div class="trip-details">
-        <p class="title">Offre ID: <span class="value">${tripDetails.offerid}</span></p>
-        <p class="title">Date départ: <span class="value">${tripDetails.datedepart}</span></p>
-        <p class="title">Ville départ: <span class="value">${tripDetails.citydepart}</span></p>
-        <p class="title">Route départ: <span class="value">${tripDetails.roaddepart}</span></p>
-        <p class="title">Date arrivée: <span class="value">${tripDetails.datearrival}</span></p>
-        <p class="title">Ville arrivée: <span class="value">${tripDetails.arrivalcity}</span></p>
-        <p class="title">Route arrivée: <span class="value">${tripDetails.arrivalroad}</span></p>
-        <p class="title">Passager: <span class="value">${tripDetails.passengerusername}</span></p>
-        <p class="title">Email Passager: <span class="value">${tripDetails.passengeremail}</span></p>
-        <p class="title">Conducteur: <span class="value">${tripDetails.driverusername}</span></p>
-        <p class="title">Email Conducteur: <span class="value">${tripDetails.driveremail}</span></p>
-    </div>
-            `;
+           const tripMessage = `
+                                <div class="trip-details">
+                                  <p style="font-size: 1.5rem; font-weight: bold;">Offre ID: <span style="font-size: 2rem; font-weight: normal;">${tripDetails.offerid}</span></p>
+                                  <p style="font-size: 1.5rem; font-weight: bold;">Date départ: <span style="font-size: 2rem; font-weight: normal;">${tripDetails.datedepart}</span></p>
+                                  <p style="font-size: 1.5rem; font-weight: bold;">Ville départ: <span style="font-size: 2rem; font-weight: normal;">${tripDetails.citydepart}</span></p>
+                                  <p style="font-size: 1.5rem; font-weight: bold;">Route départ: <span style="font-size: 2rem; font-weight: normal;">${tripDetails.roaddepart}</span></p>
+                                  <p style="font-size: 1.5rem; font-weight: bold;">Date arrivée: <span style="font-size: 2rem; font-weight: normal;">${tripDetails.datearrival}</span></p>
+                                  <p style="font-size: 1.5rem; font-weight: bold;">Ville arrivée: <span style="font-size: 2rem; font-weight: normal;">${tripDetails.arrivalcity}</span></p>
+                                  <p style="font-size: 1.5rem; font-weight: bold;">Route arrivée: <span style="font-size: 2rem; font-weight: normal;">${tripDetails.arrivalroad}</span></p>
+                                  <p style="font-size: 1.5rem; font-weight: bold;">Passager: <span style="font-size: 2rem; font-weight: normal;">${tripDetails.passengerusername}</span></p>
+                                  <p style="font-size: 1.5rem; font-weight: bold;">Email Passager: <span style="font-size: 2rem; font-weight: normal;">${tripDetails.passengeremail}</span></p>
+                                  <p style="font-size: 1.5rem; font-weight: bold;">Conducteur: <span style="font-size: 2rem; font-weight: normal;">${tripDetails.driverusername}</span></p>
+                                  <p style="font-size: 1.5rem; font-weight: bold;">Email Conducteur: <span style="font-size: 2rem; font-weight: normal;">${tripDetails.driveremail}</span></p>
+                                </div>
+                                `;
 
-            // Affichage dans l'alert
+
+            // Affichage
             sendInteractivePopup(tripMessage);
         } else {
             console.error("Réponse du serveur mal formée ou vide", json);

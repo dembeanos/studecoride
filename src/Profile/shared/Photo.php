@@ -72,14 +72,8 @@ final class Photo
 
     //Getters
 
-    private function getPdo()
-    {
-        return $this->pdo;
-    }
-    private function getPhoto()
-    {
-        return $this->photo;
-    }
+    private function getPdo(){ return $this->pdo;}
+    private function getPhoto(){ return $this->photo;}
 
     //Getter qui selectionne la bonne table
 

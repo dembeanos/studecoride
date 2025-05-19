@@ -14,7 +14,6 @@
 
 body {
     font-family: 'Sansation', Arial, Helvetica, sans-serif;
-    line-height: 1.5;
 }
 
 html {
@@ -29,6 +28,7 @@ html {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 4rem 0rem 0rem;
+    background-color: var(--secondaryColor);
 }
 
 li a {
@@ -86,7 +86,6 @@ li a {
 }
 
 @media (max-width: 768px) {
-    /* Adaptation des éléments à la petite résolution */
     .menu-list {
         display: none;
         flex-direction: column;
@@ -94,7 +93,7 @@ li a {
         position: fixed;
         top: 60px;
         right: 3rem;
-                max-width: 20%;
+        max-width: 20%;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         border-radius: 8px;
         padding: 10px 0;
@@ -109,12 +108,12 @@ li a {
     .menu {
         margin: 10px 0;
         text-align: center;
-        font-size: 1.6rem; /* Réduction de la taille de la police sur petit écran */
+        font-size: 1.6rem; 
         padding: 0 0 0 1rem;
     }
 
     .icon {
-        width: 2.5rem; /* Réduction de la taille des icônes */
+        width: 2.5rem;
     }
 
     .hamburger {
@@ -123,10 +122,10 @@ li a {
 
     .logo {
         display: flex;
-        justify-content: center;  /* Centrer horizontalement */
-        align-items: center;      /* Centrer verticalement */
-        width:  60%;
-        height: 0%; /* Ajuster la taille de la logo */
+        justify-content: center;
+        align-items: center;
+        width:  20vw;
+        height: 0%;
     }
 }
 
@@ -142,7 +141,6 @@ li a {
 
 
 @media (max-width: 320px) {
-    /* Adaptation des éléments à la petite résolution */
     .menuBar{
         padding: 1rem 2rem 1rem 0rem;
     }
@@ -168,7 +166,7 @@ li a {
     .menu {
         margin: 10px 0;
         text-align: center;
-        font-size: 1.6rem; /* Réduction de la taille de la police sur petit écran */
+        font-size: 1.6rem;
         padding: 0 0 0 1rem;
     }
 
@@ -177,7 +175,7 @@ li a {
         padding: 0.2rem;
     }
     .icon {
-        width: 1.5rem; /* Réduction de la taille des icônes */
+        width: 1.5rem;
     }
 
     .hamburger {
@@ -188,9 +186,9 @@ li a {
 
     .logo {
         display: flex;
-        justify-content: center;  /* Centrer horizontalement */
-        align-items: center;      /* Centrer verticalement */
+        justify-content: center;
+        align-items: center;
         width:  40%;
-        height: 0%; /* Ajuster la taille de la logo */
+        height: 0%;
     }
 }

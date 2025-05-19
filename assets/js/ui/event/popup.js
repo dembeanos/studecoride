@@ -55,8 +55,7 @@ window.addEventListener('load', () => {
 
     // Affichage d'une popup
     function showPopup(message) {
-        const existingPopup = document.querySelector(".popup-overlay");
-        if (existingPopup) existingPopup.remove();
+        clearAllPopups()
 
         const overlay = document.createElement("div");
         overlay.classList.add("popup-overlay");
@@ -94,22 +93,22 @@ window.addEventListener('load', () => {
     
     // Fonction pour afficher un popup interactif
     window.sendInteractivePopup = function (content, fields = []) {
-        const existingPopup = document.querySelector(".popup-overlay");
+        const existingPopup = document.querySelector(".popup-overlay-inter");
         if (existingPopup) existingPopup.remove();
 
         const overlay = document.createElement("div");
-        overlay.classList.add("popup-overlay");
+        overlay.classList.add("popup-overlay-inter");
 
         const popup = document.createElement("div");
-        popup.classList.add("popup-box");
+        popup.classList.add("popup-box-inter");
 
         const closeBtn = document.createElement("span");
         closeBtn.innerHTML = "&times;";
-        closeBtn.classList.add("popup-close");
+        closeBtn.classList.add("popup-close-inter");
         closeBtn.addEventListener("click", () => overlay.remove());
 
         const contentDiv = document.createElement("div");
-        contentDiv.classList.add("popup-content");
+        contentDiv.classList.add("popup-content-inter");
         contentDiv.innerHTML = content;
 
         popup.appendChild(closeBtn);
@@ -118,7 +117,7 @@ window.addEventListener('load', () => {
         if (fields.length > 0) {
             fields.forEach(field => {
                 const fieldDiv = document.createElement("div");
-                fieldDiv.classList.add("popup-field");
+                fieldDiv.classList.add("popup-field-inter");
 
                 const label = document.createElement("label");
                 label.textContent = field.label;
@@ -153,7 +152,7 @@ window.addEventListener('load', () => {
 
         const okBtn = document.createElement("button");
         okBtn.textContent = "OK";
-        okBtn.classList.add("popup-ok");
+        okBtn.classList.add("popup-ok-inter");
         okBtn.addEventListener("click", () => overlay.remove());
 
         popup.appendChild(okBtn);
@@ -161,3 +160,8 @@ window.addEventListener('load', () => {
         document.body.appendChild(overlay);
     };
 });
+
+function clearAllPopups() {
+    const overlays = document.querySelectorAll(".popup-overlay, .popup-overlay-inter");
+    overlays.forEach(overlay => overlay.remove());
+}

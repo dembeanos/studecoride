@@ -20,18 +20,12 @@ async function fetchRequestUpdate(action, data) {
             return;
         }
 
-        const json = await request.text();
+        const json = await request.json();
         console.log(json)
-        if (typeof json.data === 'string') {
-            try {
-                json.data = JSON.parse(json.data);
-            } catch (e) {
-                console.warn("Données déjà parsées ou mal formées :", json.data);
-            }
+        
+          if (json.type){
+            handleResponse(json)
         }
-
-        handleResponse(json);
-
     } catch (error) {
         console.error("Erreur lors de la récupération de la réponse :", error.text);
     }
@@ -82,37 +76,37 @@ export async function updatePassword(){
     } 
 }
 
+
+
 export async function updatePhoto() {
     let {inputPhoto} = initUserVar();
     let photo = inputPhoto.files[0];
-    if (photo) {
+     if (!photo) {
+            console.error("Aucun fichier sélectionné");
+            return;
+        }
+    
         try {
             const formData = new FormData();
             formData.append('action', 'updatePhoto');
             formData.append('updatePhoto', photo);
+    
             const response = await fetch('/src/Router/userRoute.php', { method: 'POST', body: formData });
-            const responseText = await response.text();
-            console.log("Réponse brute du serveur:", responseText); 
-
-            try {
-                const updateResponse = JSON.parse(responseText); 
-                if (updateResponse.status === 'success') {
-                    console.dir(updateResponse); 
-                } else {
-                    console.error('Erreur:', updateResponse.message); 
-                }
-                userInfo();
-            } catch (error) {
-                console.error('Erreur de parsing JSON:', error);
-                console.log('Contenu de la réponse:', responseText); 
+    
+            if (!response.ok) {
+                console.error('Erreur serveur, statut:', response.status);
+                return;
             }
+            const updateResponse = await response.json();
+            if (updateResponse.type) {
+                handleResponse(updateResponse)
+            }
+            userInfo();
         } catch (error) {
-            console.error('Erreur de requête:', error);
+            console.error('Erreur lors de la requête ou du parsing JSON:', error);
         }
-    } else {
-        console.error("Aucun fichier sélectionné");
     }
-}
+    
 
 export function addCar() {
     let { inputCar } = initUserVar();

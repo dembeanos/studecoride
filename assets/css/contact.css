@@ -36,17 +36,18 @@ main {
   width: 100%;
   max-width: 600px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-top: 10rem;
 }
 
 legend {
-  font-size: clamp(1.50rem, 2.5vw, 1.75rem);
+  font-size: clamp(2rem, 2.5vw, 2.25rem);
   font-weight: bold;
   color: black;
   margin-bottom: var(--gap);
 }
 
 .introMessage {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   margin-bottom: var(--gap);
   color: var(--text-color);
 }
@@ -60,7 +61,7 @@ legend {
 
 
 label {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 600;
 }
 
@@ -73,7 +74,7 @@ textarea {
   padding: 0.75rem;
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   transition: border var(--transition), box-shadow var(--transition);
 }
 
@@ -130,7 +131,6 @@ button:hover {
     width: 100%;
     z-index: 10;
     display: none;
-    /* Par défaut, la boîte est cachée */
 }
 
 #departSuggestionBox div,
@@ -143,7 +143,7 @@ button:hover {
 #arrivalSuggestionBox div:hover {
     background-color: #f0f0f0;
 }
-/* Responsive */
+
 @media (max-width: 600px) {
   .formContact {
     padding: var(--gap);

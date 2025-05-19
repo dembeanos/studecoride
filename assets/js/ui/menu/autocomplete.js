@@ -30,6 +30,8 @@ window.addEventListener('load', function () {
 
 // Méthode fetch d'envoi reception des données
 async function fetchRequest(data) {
+    
+    try {
     let request = await fetch(`/src/Router/cityRoute.php`, {
         method: 'POST',
         headers: {
@@ -42,11 +44,13 @@ async function fetchRequest(data) {
         throw new Error(`Erreur HTTP : ${request.status}`);
     }
 
-    const responseText = await request.text();
-    console.log(responseText)
+    const response = await request.json();
+    if (response.type) {
+            handleResponse(response)
+        }
 
-    try {
-        return JSON.parse(responseText);
+        return response;
+        
     } catch (error) {
         console.error("Erreur de parsing JSON:", error);
         throw error;

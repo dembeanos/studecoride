@@ -35,11 +35,18 @@ final class Preference {
         } else { 
         $this->smoke = $smoke;}
     }
-    private function setOther($other) {
-        $this->other = preg_replace('/[<>{}\[\]\/\\\&;`\'"!#$%^*()|\\?^~_+¬]/', '', $other);
-        $this->other = nl2br($this->other); // conserve les sauts de lignes en les convertissant en <br>
-        $this->other = htmlspecialchars($this->other, ENT_NOQUOTES, 'UTF-8');
+   private function setOther($other): void {
+    if ($other !== null) {
+        $cleaned = preg_replace('/[^a-zA-Z0-9\s.,!?()\-]/u', '', $other);
+        
+        $cleaned = nl2br($cleaned);
+        
+        $this->other = htmlspecialchars($cleaned, ENT_NOQUOTES, 'UTF-8');
+    } else {
+        $this->other = '';
     }
+}
+
 
     private function getUserId(){return $this->userId;}
     private function getPdo(){return $this->pdo;}

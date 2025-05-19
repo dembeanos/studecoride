@@ -8,8 +8,8 @@ require_once __DIR__ .'/../../Traits/Exception.php';
 $db = new Database();
 $pdo = $db->getPdo();
 
-final class Car
-{
+final class Car {
+
     use ExceptionTrait;
 
     private $pdo;
@@ -112,38 +112,54 @@ final class Car
 
     public function getPdo(){ return $this->pdo; }
     public function getUserId(){ return $this->userId; }
-    public function getMarque(){ return htmlspecialchars_decode($this->marque); }
-    public function getModele(){ return htmlspecialchars_decode($this->modele); }
+    public function getMarque(){ return $this->marque; }
+    public function getModele(){ return $this->modele; }
     public function getImmatriculation(){ return $this->immatriculation; }
-    public function getFirstImmatriculation(){ return htmlspecialchars_decode($this->firstImmatriculation); }
-    public function getColor(){ return htmlspecialchars_decode($this->color); }
-    public function getEnergy(){ return htmlspecialchars_decode($this->energy); }
-    public function getPlaces(){ return htmlspecialchars_decode($this->places); }
+    public function getFirstImmatriculation(){ return $this->firstImmatriculation; }
+    public function getColor(){ return $this->color; }
+    public function getEnergy(){ return $this->energy; }
+    public function getPlaces(){ return $this->places; }
 
     // Fonctions Principales
 
+public function getCar()
+{
+    $query = '
+        SELECT carid, marque, modele, immatriculation, firstimmatriculation,
+               color, energy, places
+        FROM cars
+        WHERE iduser = :userId
+    ';
 
-    public function getCar()
-    {
-        $query = 'SELECT carid, marque, modele, immatriculation, firstimmatriculation, color, energy, places
-                FROM cars
-                WHERE iduser = :userId';
+    try {
+        $statement = $this->pdo->prepare($query);
+        $statement->bindValue(':userId', $this->getUserId(), PDO::PARAM_INT);
+        $statement->execute();
+        $carInfo = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        try {
-            $statement = $this->pdo->prepare($query);
-            $statement->bindValue(':userId', $this->getUserId(), PDO::PARAM_INT);
-            $statement->execute();
-            $carInfo = $statement->fetchall(PDO::FETCH_ASSOC);
+        $carInfo = array_map(function($row) {
+            $row = array_map('trim', $row);
+            return array_map(function($val) {
+                return htmlspecialchars_decode($val, ENT_QUOTES);
+            }, $row);
+        }, $carInfo);
 
-            return [
-                'status' => 'success',
-                'data' => $carInfo
-            ];
+        return [
+            'status' => 'success',
+            'data' => $carInfo
+        ];
 
-        } catch (PDOException $e) {
-            return  $this->saveLog('Erreur lors de la recupération des véhicules. Pour l\'user:'.$this->getUserId() . $e->getMessage(),'CRITICAL');
-        }
+    } catch (PDOException $e) {
+        return $this->saveLog(
+            'Erreur lors de la récupération des véhicules pour l\'user ' 
+            . $this->getUserId() 
+            . ' : ' 
+            . $e->getMessage(),
+            'CRITICAL'
+        );
     }
+}
+
 
 
 

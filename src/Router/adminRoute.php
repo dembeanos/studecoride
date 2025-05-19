@@ -20,8 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['updatePhoto'])) {
     $photo = $_FILES['updatePhoto'];
 
     if ($photo['error'] === UPLOAD_ERR_OK) {
-        // Instanciation ici
-        $send = new Photo($pdo, null, $adminId); // Assure-toi que $adminId est bien défini
+        $send = new Photo($pdo, null, $adminId);
 
         $result = $send->updatePhoto($photo);
 

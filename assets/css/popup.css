@@ -1,6 +1,6 @@
 /* Messages au-dessus des champs */
 .field-message {
-    font-size: 0.85rem;
+    font-size: 1.7rem;
     margin-top: -0.5rem;
     margin-bottom: 0.25rem;
     padding: 4px 8px;
@@ -11,11 +11,13 @@
 .error-message {
     background-color: #fdd;
     color: #900;
+    font-size: 1.5rem;
 }
 
 .success-message {
     background-color: #dfd;
     color: #060;
+    font-size: 1.5rem;
 }
 
 /* Popup central */
@@ -29,7 +31,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 9999;
+    z-index: 2147483647
 }
 
 .popup-box {

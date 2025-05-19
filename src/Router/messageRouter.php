@@ -62,11 +62,6 @@ if ($data) {
             $messageData = $send->sendPublicMessage();
             $response = $messageData;
             break;
-    /*case 'deleteMessage':
-            $send->setMessageId($data['data'] ?? null);
-            $messageData = $send->deleteMessage();
-            $response = $messageData;
-            break;*/ 
         default:
             $response = [
                 'type' => 'dev',

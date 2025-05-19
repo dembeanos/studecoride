@@ -20,7 +20,7 @@ window.addEventListener('load', event => {
     button.addEventListener('click', e => {
         e.preventDefault(); 
 
-        let formData = {
+        let data = {
             lastName: lastName.value,
             firstName: firstName.value,
             email: email.value,
@@ -35,29 +35,28 @@ window.addEventListener('load', event => {
             ...(userType && { userType })
         };
 
-        fetchRequest(formData);
-        console.log('Données envoyées par js :', formData)
+        fetchRequest(data);
+        console.log('Données envoyées par js :', data)
     });
 
-    async function fetchRequest(formData) {
+    async function fetchRequest(data) {
         try {
             let request = await fetch(`/src/Router/subscribeRoute.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ formData: formData })
+                body: JSON.stringify({ data: data })
             });
     
-            const responseText = await request.text();
-            console.log(responseText)
-            const responseData = JSON.parse(responseText);
-    
-            handleResponse(responseData);
+            const response = await request.json();
+             if (response.type){
+            handleResponse(response)
+        }
+        return response
 
         } catch (error) {
             console.error("Erreur lors de la récupération de la réponse :", error);
-            handleResponse(error);
         }
     }
     
