@@ -3,8 +3,8 @@ services:
     image: postgis/postgis
     container_name: postgis-db
     environment:
-      POSTGRES_USER: ${'PGSQL_USERNAME'}
-      POSTGRES_PASSWORD: ${'PGSQL_PASSWORD'}
+      POSTGRES_USER: ${PGSQL_USERNAME}
+      POSTGRES_PASSWORD: ${PGSQL_PASSWORD}
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:

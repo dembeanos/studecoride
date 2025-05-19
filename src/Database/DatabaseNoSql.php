@@ -14,7 +14,7 @@ final class DatabaseNoSql {
 
     public function __construct() {
         
-        $uri = ${'MONGO_URI'};
+        $uri = getenv('MONGO_URI');
 
         try {
             $this->client = new Client($uri);
