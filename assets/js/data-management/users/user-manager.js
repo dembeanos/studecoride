@@ -453,7 +453,7 @@ export async function reservation() {
                 let dateDepart = new Date(info.dateDepart);
 
                 if (info.status === 'canceled') {
-                    action.textContent = "❌ Annulée";
+                    action.textContent = "❌ Annulé";
                 } else if (currentDate < dateDepart) {
                     let deleteButton = document.createElement("button");
                     deleteButton.textContent = "❌ Annuler";
